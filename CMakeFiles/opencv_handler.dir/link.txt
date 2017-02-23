@@ -1,0 +1,2 @@
+/usr/bin/ar cr libopencv_handler.a  CMakeFiles/opencv_handler.dir/src/opencv_handler.cpp.o
+/usr/bin/ranlib libopencv_handler.a

@@ -1,0 +1,2 @@
+/home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles/main.dir
+/home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles/opencv_handler.dir
