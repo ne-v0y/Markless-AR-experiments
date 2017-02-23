@@ -2,4 +2,4 @@
 experiments for university course project  
 
 To run:  
-./main <video_input>
+./main `<video_input>`
