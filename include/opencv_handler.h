@@ -35,6 +35,9 @@ namespace opencv_handler
 
       int imgStreamIn( int arg);
       void houghLineFinder();
+      void cornerFinder();
+      bool findPlane();
+
   };
 
 } // namespace opencv_handler
