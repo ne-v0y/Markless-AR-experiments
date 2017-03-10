@@ -43,6 +43,7 @@ namespace opencv_handler
   void image_processing::houghLineFinder()
   {
     Mat copy = image_processing::img;
+    //cvtColor(copy, copy, CV_BGR2GRAY);
     blur(copy, copy, Size(4,4));
     Canny(copy, image_processing::mask, 100, 300, 3);
     vector<Vec2f> lines_pos;
@@ -72,13 +73,13 @@ namespace opencv_handler
     dst = Mat::zeros( copy.size(), CV_32FC1);
 
     /// Detector parameters
-    int blockSize = 2;
+    int blockSize = 5;
     int apertureSize = 3;
     double k = 0.04;
 
+    cvtColor(copy, copy, CV_BGR2GRAY);
     /// Detecting corners
     cornerHarris( copy, dst, blockSize, apertureSize, k, BORDER_DEFAULT );
-
     /// Normalizing
     normalize( dst, dst_norm, 0, 255, NORM_MINMAX, CV_32FC1, Mat() );
     convertScaleAbs( dst_norm, dst_norm_scaled );
