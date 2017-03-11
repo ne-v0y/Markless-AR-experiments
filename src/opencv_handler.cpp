@@ -90,13 +90,13 @@ namespace opencv_handler
             {
               if( (int) dst_norm.at<float>(j,i) > 200 )
                 {
-                 circle( dst_norm_scaled, Point( i, j ), 5,  Scalar(0), 2, 8, 0 );
+                 circle( image_processing::img, Point( i, j ), 5,  Scalar(0), 2, 8, 0 );
                 }
             }
        }
     /// Showing the result
-    namedWindow( "corners_window", CV_WINDOW_AUTOSIZE );
-    imshow( "corners_window", dst_norm_scaled );
+    //namedWindow( "corners_window", CV_WINDOW_AUTOSIZE );
+    //imshow( "corners_window", dst_norm_scaled );
   }
 
   bool image_processing::findPlane()
