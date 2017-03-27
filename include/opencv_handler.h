@@ -2,18 +2,11 @@
 #define AR_OPENCV_HANDLER_H_
 
 #include <opencv2/opencv.hpp>
-/*
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/objdetect/objdetect.hpp>
 #include <opencv2/video/video.hpp>
-*/
-#include <opencv2/core.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/objdetect.hpp>
-#include <opencv2/video.hpp>
 #include <stdio.h>
 
 using namespace cv;
@@ -29,6 +22,8 @@ namespace opencv_handler
       Mat mask;
       Mat result;
 
+      bool intersection(Point2f o1, Point2f p1, Point2f o2, Point2f p2, Point2f &r);
+
     public:
       image_processing();
       ~image_processing();
@@ -36,7 +31,6 @@ namespace opencv_handler
       int imgStreamIn( int arg);
       void houghLineFinder();
       void cornerFinder();
-      bool findPlane();
 
   };
 
