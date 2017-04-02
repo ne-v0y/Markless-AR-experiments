@@ -36,6 +36,41 @@ namespace opencv_handler
     return true;
   }
 
+  void image_processing::findParallel(vector<int> &angles, vector<int> &indices)
+  {
+    /* return indices for lines are parallel*/
+    vector<float> tmp;
+    for(size_t i = 0; i < angles.size(); ++i)
+    {
+      auto it = std::find(tmp.begin(), tmp.end(), angles[i]);
+      if ( it != tmp.end())
+        tmp.push_back(angles[i]);
+      else
+      {
+        indices.push_back(i);
+        for(size_t j = 0; j < tmp.size(); ++j)
+        {
+          if (tmp[j] == angles[i])
+            indices.push_back(j);
+        }
+      }
+    }
+
+  }
+
+  void image_processing::lineAngles(vector<Point2f> points, vector<int> &angles)
+  {
+    /* calculate all the angles of detected lines*/
+    float angle;
+    for(size_t i = 0; i < points.size(); i+=2)
+    {
+      angle = atan2(points[i].y - points[i+1].y, points[i].x-points[i+1].x) * 180 /CV_PI;
+      angles.push_back(angle);
+    }
+    for (size_t i = 0; i < angles.size(); i++)
+      cout << angles[i] << endl;
+  }
+
   int image_processing::imgStreamIn(int arg)
   {
     VideoCapture cap(arg);
@@ -48,7 +83,7 @@ namespace opencv_handler
       cap >> image_processing::img;
       image_processing::houghLineFinder();
       //image_processing::cornerFinder();
-      imshow("frame", image_processing::img);
+      //imshow("frame", image_processing::img);
       if (waitKey(30) == 'q') break;
     }
 
@@ -58,12 +93,12 @@ namespace opencv_handler
   void image_processing::houghLineFinder()
   {
     Mat copy = image_processing::img;
-    cvtColor(copy, copy, CV_BGR2GRAY);
-    blur(copy, copy, Size(2,2));
-    Canny(copy, image_processing::mask, 80, 300, 3);
+    //cvtColor(copy, copy, CV_BGR2GRAY);
+    //blur(copy, copy, Size(2,2));
+    Canny(copy, image_processing::mask, 50, 300, 3);
     vector<Vec2f> lines_pos;
-    vector<Point> drawing_pts;
-    HoughLines(mask, lines_pos, 1, CV_PI / 180, 100, 0, 5);
+    vector<Point2f> drawing_pts;
+    HoughLines(mask, lines_pos, 1, CV_PI / 180, 120, 50, 10);
     for (size_t i = 0; i < lines_pos.size(); ++i)
     {
       cout<< "found lines" << endl;
@@ -80,21 +115,40 @@ namespace opencv_handler
       drawing_pts.push_back(pt2);
     }
 
-    imshow("lines", copy);
+    /* find intersection points*/
     Point2f inter_pt;
-    vector<Point2f> scene;
+    vector<Point2f> line_intersc;
     for (size_t i = 0; i < drawing_pts.size(); i+=4)
     {
       if (image_processing::intersection(drawing_pts[i], drawing_pts[i+2],
                         drawing_pts[i+1],drawing_pts[i+3], inter_pt))
-        scene.push_back(inter_pt);
+        line_intersc.push_back(inter_pt);
     }
 
-    if( not lines_pos.empty())
+    /* find parallel lines*/
+    vector<Point2f> line_parallel;
+    vector<int> line_angles;
+    vector<int> parallel_indices;
+    image_processing::lineAngles(drawing_pts, line_angles);
+    image_processing::findParallel(line_angles, parallel_indices);
+    cout << "parallel indicies " << parallel_indices.size() << endl;
+    for(size_t i = 0; i < parallel_indices.size(); ++i)
+    {
+      if ( line_parallel.size() < line_intersc.size())
+        line_parallel.push_back(drawing_pts[parallel_indices[i]*2]);
+      if ( line_parallel.size() < line_intersc.size())
+        line_parallel.push_back(drawing_pts[parallel_indices[i]*2+1]);
+    }
+
+    //TODO:
+    // make sure two vertices have the same length
+
+    cout << "angle size = " << line_parallel.size() << " " << "intersection size = " << line_intersc.size() << endl;
+
+    if( line_intersc.size() >= 4)
     {
       // find homograph based on the interest points
-      cout << "scene points number: " << scene.size() << endl;
-      Mat H = findHomography( drawing_pts, scene, CV_RANSAC );
+      Mat H = findHomography( line_intersc, line_parallel, CV_RANSAC );
       vector<Point2f> obj_corners(4);
       obj_corners[0] = cvPoint(0,0);
       obj_corners[1] = cvPoint(copy.cols, 0);
@@ -110,6 +164,8 @@ namespace opencv_handler
       line( copy, scene_corners[3] + Point2f( copy.cols, 0), scene_corners[0] + Point2f( copy.cols, 0), Scalar( 0, 255, 0), 4 );
 
     }
+    else
+      cout << "Not enough feature points" << endl;
     image_processing::result = copy;
 
     namedWindow("result", WINDOW_AUTOSIZE);

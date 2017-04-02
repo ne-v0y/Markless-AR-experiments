@@ -8,6 +8,7 @@
 #include <opencv2/objdetect/objdetect.hpp>
 #include <opencv2/video/video.hpp>
 #include <stdio.h>
+#include <algorithm>
 
 using namespace cv;
 using namespace std;
@@ -23,6 +24,8 @@ namespace opencv_handler
       Mat result;
 
       bool intersection(Point2f o1, Point2f p1, Point2f o2, Point2f p2, Point2f &r);
+      void findParallel(vector<int> &angles, vector<int> &indices);
+      void lineAngles(vector<Point2f> points, vector<int> &angles);
 
     public:
       image_processing();

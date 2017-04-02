@@ -23,6 +23,7 @@ int main(int argc, char** argv)
     return -1;
   }
 
+  /* create image processing instance*/
   image_processing proc;
   proc.imgStreamIn(atoi(argv[1]));
 }
