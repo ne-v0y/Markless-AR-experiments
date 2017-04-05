@@ -26,6 +26,7 @@ namespace opencv_handler
       bool intersection(Point2f o1, Point2f p1, Point2f o2, Point2f p2, Point2f &r);
       void findParallel(vector<int> &angles, vector<int> &indices);
       void lineAngles(vector<Point2f> points, vector<int> &angles);
+      void findVanishing(vector<Point2f> &line_pts);
 
     public:
       image_processing();
@@ -33,8 +34,8 @@ namespace opencv_handler
 
       int imgStreamIn( int arg);
       void houghLineFinder();
+      void houghLinePFinder();
       void cornerFinder();
-
   };
 
 } // namespace opencv_handler
