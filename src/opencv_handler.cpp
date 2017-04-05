@@ -174,7 +174,7 @@ namespace opencv_handler
   void image_processing::houghLinePFinder()
   {
     Mat copy = image_processing::img;
-    //cvtColor(copy, copy, CV_BGR2GRAY);
+    cvtColor(copy, copy, CV_BGR2GRAY);
     //blur(copy, copy, Size(2,2));
     Canny(copy, image_processing::mask, 10, 300, 3);
     vector<Vec4i> lines_pos;
