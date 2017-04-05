@@ -62,7 +62,6 @@ namespace opencv_handler
     HoughLines(mask, lines_pos, 1, CV_PI / 180, 120, 100, 50);
     for (size_t i = 0; i < lines_pos.size(); ++i)
     {
-      cout<< "found lines" << endl;
       float rho = lines_pos[i][0], theta = lines_pos[i][1];
       Point pt1, pt2;
       double a = cos(theta), b = sin(theta);
@@ -185,10 +184,10 @@ namespace opencv_handler
     for (size_t i = 0; i < lines_pos.size(); ++i)
     {
       cout<< "found lines " << lines_pos[i][0] << " "<< lines_pos[i][1] << " "<< lines_pos[i][2] << " "<< lines_pos[i][3] <<endl;
-      line( copy, Point(lines_pos[i][0], lines_pos[i][1]), Point(lines_pos[i][2], lines_pos[i][3]), Scalar(0,0,255), 1, CV_AA);
       Point2f pt1, pt2;
       pt1.x = lines_pos[i][0]; pt1.y = lines_pos[i][1];
       pt2.x = lines_pos[i][2]; pt2.y = lines_pos[i][3];
+      line( copy, pt1, pt2, Scalar(0,0,255), 1, CV_AA);
       drawing_pts.push_back(pt1);
       drawing_pts.push_back(pt2);
     }
