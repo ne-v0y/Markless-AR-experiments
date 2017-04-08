@@ -298,20 +298,23 @@ namespace opencv_handler
       vector<Point2f> obj_corners(4);
       obj_corners[0] = cvPoint(0,0);
       obj_corners[1] = cvPoint(0, copy.rows-1);
-      obj_corners[2] = cvPoint(0, copy.rows-1);
-      obj_corners[3] = cvPoint(copy.cols-1, copy.rows-1);
+      obj_corners[2] = cvPoint(copy.cols-1, copy.rows-1);
+      obj_corners[3] = cvPoint(copy.cols-1, 0);
       vector<Point2f> scene_corners(4);
       perspectiveTransform(obj_corners, scene_corners, H);
       cout << "scene_corners " << scene_corners << endl;
       for (size_t i = 0; i < scene_corners.size(); i ++)
       {
         circle(copy, scene_corners[i], 4, Scalar(0, 255 ,0), -1, 8, 0);
+        putText(copy, to_string(i), scene_corners[i], FONT_HERSHEY_SIMPLEX, 0.5, Scalar(255,0,255), 2, 3,false );
+
       }
 
-      //line( copy, scene_corners[0], scene_corners[1], Scalar(0, 255, 0), 4 );
-      //line( copy, scene_corners[1], scene_corners[2], Scalar( 0, 255, 0), 4 );
-      //line( copy, scene_corners[2], scene_corners[3], Scalar( 0, 255, 0), 4 );
-      //line( copy, scene_corners[3], scene_corners[0], Scalar( 0, 255, 0), 4 );
+      //polylines(copy, scene_corners, true, Scalar(0,255,0), 1, 8, 0 );
+      line( copy, scene_corners[0], scene_corners[2], Scalar(0, 255, 0), 4 );
+      line( copy, scene_corners[2], scene_corners[1], Scalar( 0, 255, 0), 4 );
+      line( copy, scene_corners[1], scene_corners[3], Scalar( 0, 255, 0), 4 );
+      line( copy, scene_corners[3], scene_corners[0], Scalar( 0, 255, 0), 4 );
 
 
       /* find the rvec and tevc*/
