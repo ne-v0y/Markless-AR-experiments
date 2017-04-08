@@ -10,14 +10,6 @@
 Detections.h
 /home/ka/Desktop/414/Markless-AR-experiments/src/Detections.h
 
-/home/ka/Desktop/414/Markless-AR-experiments/src/main.cpp
-stdio.h
--
-stdlib.h
--
-Detections.cpp
-/home/ka/Desktop/414/Markless-AR-experiments/src/Detections.cpp
-
 include/Detections.h
 opencv2/opencv.hpp
 -

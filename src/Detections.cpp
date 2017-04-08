@@ -6,7 +6,7 @@
   *
   */
 
-#include "opencv_handler.h"
+#include "Detections.h"
 
 namespace opencv_handler
 {
@@ -26,7 +26,7 @@ namespace opencv_handler
     if (arg == 3)
     {
       /* using image instead of video*/
-      image_processing::img = imread("./img/1.jpg", CV_LOAD_IMAGE_COLOR);
+      image_processing::img = imread("./img/0.jpg", CV_LOAD_IMAGE_COLOR);
       image_processing::houghLinePFinder();
       waitKey(0);                                          // Wait for a keystroke in the window
     }
@@ -211,82 +211,73 @@ namespace opencv_handler
       }
     }
 
-    // /* find parallel lines*/ /*TODO: not looping over all points yet, just doing within one line to rest of all*/
-    // vector<Point2f> line_parallel;
-    // vector<int> line_angles;
-    // vector<int> parallel_indices;
-    // image_processing::lineAngles(copy, drawing_pts, line_angles);
-    // image_processing::findParallel(line_angles, parallel_indices);
-    // // cout << "parallel indicies " << parallel_indices.size() << endl;
-    // for(size_t i = 0; i < parallel_indices.size(); ++i)
-    // {
-    //   if ( line_parallel.size() < line_intersc.size())
-    //     line_parallel.push_back(drawing_pts[parallel_indices[i]*2]);
-    //   if ( line_parallel.size() < line_intersc.size())
-    //     line_parallel.push_back(drawing_pts[parallel_indices[i]*2+1]);
-    // }
 
     for (size_t t = 0; t < line_intersc.size(); t ++)
-    {
       circle(copy, line_intersc[t], 4, Scalar(0,0,255), -1, 8, 0);
-      //circle(copy, line_parallel[t], 4, Scalar(255,0,0), -1, 8, 0);
-    }
 
 
     //RotatedRect bounding = minAreaRect(line_intersc);
-    Rect bounding = boundingRect(line_intersc);
-    vector<Point2f> vertices;
-    vertices.push_back(Point2f(bounding.x, bounding.y));
-    vertices.push_back(Point2f(bounding.x + bounding.width, bounding.y));
-    vertices.push_back(Point2f(bounding.x + bounding.width, bounding.y + bounding.height));
-    vertices.push_back(Point2f(bounding.x, bounding.y+bounding.height));
-    //Point2f tmp[4];
-    //bounding.points(tmp);
-    float diff_ = 9999;
-    Point2f d;
-    for (int i = 0; i < 4; i++)
+    // TODO : only when lines intersections are larger than XX, check XX
+
+    vector<Point2f> vertices, useful;
+    if (! line_intersc.size() < 4)
+      cout << "Not enough line intersections detected" << endl;
+    else
     {
-      line(copy, vertices[i], vertices[(i+1)%4], Scalar(0,100,0),2);
-      d = vertices[i] - vertices[(i+1)%4];
-      if (sqrt(d.x*d.x + d.y*d.y) < diff_)
-        diff_ = sqrt(d.x*d.x + d.y*d.y);
-    }
-    cout << diff_ << endl;
-    //cout << "bounding rectangel" << bounding << endl;
-    vector<Point2f> useful;
-    // TODO: use some good algorithm to find most useful four points
-    sort(line_intersc.begin(),  line_intersc.end(), image_processing::pts_sorting);
-    for(size_t t =0; t < line_intersc.size(); t ++)
-    {
-      // TODO: find correct points
-      if (useful.empty() )
+      Rect bounding = boundingRect(line_intersc);
+
+      vertices.push_back(Point2f(bounding.x, bounding.y));
+      vertices.push_back(Point2f(bounding.x + bounding.width, bounding.y));
+      vertices.push_back(Point2f(bounding.x + bounding.width, bounding.y + bounding.height));
+      vertices.push_back(Point2f(bounding.x, bounding.y+bounding.height));
+      //Point2f tmp[4];
+      //bounding.points(tmp);
+      float diff_ = 9999;
+      Point2f d;
+      for (int i = 0; i < 4; i++)
       {
-        d = line_intersc[t] - line_intersc[(t+1)%line_intersc.size()];
-        if ((useful.size() < 4 ) and (sqrt(d.x*d.x+d.y*d.y) > (diff_/3*2)))
-        {
-            useful.push_back(line_intersc[t]);
-            circle(copy, line_intersc[t], 8, Scalar(0,0,0), -1,8,0);
-            useful.push_back(line_intersc[t+1]);
-            circle(copy, line_intersc[t+1], 8, Scalar(0,0,0), -1,8,0);
-
-        }
+        line(copy, vertices[i], vertices[(i+1)%4], Scalar(0,100,0),2);
+        d = vertices[i] - vertices[(i+1)%4];
+        if (sqrt(d.x*d.x + d.y*d.y) < diff_)
+          diff_ = sqrt(d.x*d.x + d.y*d.y);
       }
-      else
+      cout << diff_ << endl;
+      //cout << "bounding rectangel" << bounding << endl;
+
+      // TODO: use some good algorithm to find most useful four points
+      sort(line_intersc.begin(),  line_intersc.end(), image_processing::pts_sorting);
+      for(size_t t =0; t < line_intersc.size(); t ++)
       {
-        d = line_intersc[t] - useful[useful.size()-1];
-        if ((useful.size() < 4 ) and (sqrt(d.x*d.x+d.y*d.y) > (diff_/3*2)))
+        if (useful.empty() )
         {
-            useful.push_back(line_intersc[t]);
-            circle(copy, line_intersc[t], 8, Scalar(0,0,0), -1,8,0);
-            //useful.push_back(line_intersc[t+1]);
-            //circle(copy, line_intersc[t+1], 8, Scalar(0,0,0), -1,8,0);
+          d = line_intersc[t] - line_intersc[(t+1)%line_intersc.size()];
+          if ((useful.size() < 4 ) and (sqrt(d.x*d.x+d.y*d.y) > (diff_/3*2)))
+          {
+              useful.push_back(line_intersc[t]);
+              circle(copy, line_intersc[t], 8, Scalar(0,0,0), -1,8,0);
+              useful.push_back(line_intersc[t+1]);
+              circle(copy, line_intersc[t+1], 8, Scalar(0,0,0), -1,8,0);
 
-
+          }
         }
-      }
+        else
+        {
+          d = line_intersc[t] - useful[useful.size()-1];
+          if ((useful.size() < 4 ) and (sqrt(d.x*d.x+d.y*d.y) > (diff_/3*2)))
+          {
+              useful.push_back(line_intersc[t]);
+              circle(copy, line_intersc[t], 8, Scalar(0,0,0), -1,8,0);
+              //useful.push_back(line_intersc[t+1]);
+              //circle(copy, line_intersc[t+1], 8, Scalar(0,0,0), -1,8,0);
 
 
+          } /* end of internel if*/
+        } /* end of useful.empty conditional*/
+
+
+      } /* end of for loop*/
     }
+
 
 
     cout << "original = " << vertices.size() << " target = " << useful.size() << " " << endl;

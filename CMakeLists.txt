@@ -11,7 +11,7 @@ include_directories(include ${OpenCV_INCLUDE_DIRS} )
 
 # ### opencv_handler ###
 ########################
-add_library( opencv_handler src/opencv_handler.cpp )
+add_library( Detections src/Detections.cpp )
 
 # ### main ###
 ##############

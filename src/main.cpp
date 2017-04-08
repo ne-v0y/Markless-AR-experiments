@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "opencv_handler.cpp"
+#include "Detections.cpp"
 
 using namespace std;
 using namespace opencv_handler;

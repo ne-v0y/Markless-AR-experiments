@@ -102,6 +102,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named Detections
+
+# Build rule for target.
+Detections: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Detections
+.PHONY : Detections
+
+# fast build rule for target.
+Detections/fast:
+	$(MAKE) -f CMakeFiles/Detections.dir/build.make CMakeFiles/Detections.dir/build
+.PHONY : Detections/fast
+
+#=============================================================================
 # Target rules for targets named main
 
 # Build rule for target.
@@ -114,18 +127,29 @@ main/fast:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
-#=============================================================================
-# Target rules for targets named opencv_handler
+src/Detections.o: src/Detections.cpp.o
+.PHONY : src/Detections.o
 
-# Build rule for target.
-opencv_handler: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 opencv_handler
-.PHONY : opencv_handler
+# target to build an object file
+src/Detections.cpp.o:
+	$(MAKE) -f CMakeFiles/Detections.dir/build.make CMakeFiles/Detections.dir/src/Detections.cpp.o
+.PHONY : src/Detections.cpp.o
 
-# fast build rule for target.
-opencv_handler/fast:
-	$(MAKE) -f CMakeFiles/opencv_handler.dir/build.make CMakeFiles/opencv_handler.dir/build
-.PHONY : opencv_handler/fast
+src/Detections.i: src/Detections.cpp.i
+.PHONY : src/Detections.i
+
+# target to preprocess a source file
+src/Detections.cpp.i:
+	$(MAKE) -f CMakeFiles/Detections.dir/build.make CMakeFiles/Detections.dir/src/Detections.cpp.i
+.PHONY : src/Detections.cpp.i
+
+src/Detections.s: src/Detections.cpp.s
+.PHONY : src/Detections.s
+
+# target to generate assembly for a file
+src/Detections.cpp.s:
+	$(MAKE) -f CMakeFiles/Detections.dir/build.make CMakeFiles/Detections.dir/src/Detections.cpp.s
+.PHONY : src/Detections.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -151,46 +175,22 @@ src/main.cpp.s:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
-src/opencv_handler.o: src/opencv_handler.cpp.o
-.PHONY : src/opencv_handler.o
-
-# target to build an object file
-src/opencv_handler.cpp.o:
-	$(MAKE) -f CMakeFiles/opencv_handler.dir/build.make CMakeFiles/opencv_handler.dir/src/opencv_handler.cpp.o
-.PHONY : src/opencv_handler.cpp.o
-
-src/opencv_handler.i: src/opencv_handler.cpp.i
-.PHONY : src/opencv_handler.i
-
-# target to preprocess a source file
-src/opencv_handler.cpp.i:
-	$(MAKE) -f CMakeFiles/opencv_handler.dir/build.make CMakeFiles/opencv_handler.dir/src/opencv_handler.cpp.i
-.PHONY : src/opencv_handler.cpp.i
-
-src/opencv_handler.s: src/opencv_handler.cpp.s
-.PHONY : src/opencv_handler.s
-
-# target to generate assembly for a file
-src/opencv_handler.cpp.s:
-	$(MAKE) -f CMakeFiles/opencv_handler.dir/build.make CMakeFiles/opencv_handler.dir/src/opencv_handler.cpp.s
-.PHONY : src/opencv_handler.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
+	@echo "... Detections"
 	@echo "... edit_cache"
 	@echo "... main"
-	@echo "... opencv_handler"
 	@echo "... rebuild_cache"
+	@echo "... src/Detections.o"
+	@echo "... src/Detections.i"
+	@echo "... src/Detections.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
-	@echo "... src/opencv_handler.o"
-	@echo "... src/opencv_handler.i"
-	@echo "... src/opencv_handler.s"
 .PHONY : help
 
 

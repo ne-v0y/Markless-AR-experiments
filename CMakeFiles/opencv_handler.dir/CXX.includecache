@@ -6,27 +6,3 @@
 
 #IncludeRegexTransform: 
 
-/home/ka/Desktop/414/Markless-AR-experiments/src/opencv_handler.cpp
-opencv_handler.h
-/home/ka/Desktop/414/Markless-AR-experiments/src/opencv_handler.h
-
-include/opencv_handler.h
-opencv2/opencv.hpp
--
-opencv2/core/core.hpp
--
-opencv2/highgui/highgui.hpp
--
-opencv2/imgproc/imgproc.hpp
--
-opencv2/objdetect/objdetect.hpp
--
-opencv2/video/video.hpp
--
-stdio.h
--
-algorithm
--
-string
--
-

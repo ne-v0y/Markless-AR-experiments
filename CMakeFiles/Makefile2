@@ -56,13 +56,48 @@ CMAKE_SOURCE_DIR = /home/ka/Desktop/414/Markless-AR-experiments
 CMAKE_BINARY_DIR = /home/ka/Desktop/414/Markless-AR-experiments
 
 #=============================================================================
+# Target rules for target CMakeFiles/Detections.dir
+
+# All Build rule for target.
+CMakeFiles/Detections.dir/all:
+	$(MAKE) -f CMakeFiles/Detections.dir/build.make CMakeFiles/Detections.dir/depend
+	$(MAKE) -f CMakeFiles/Detections.dir/build.make CMakeFiles/Detections.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles  1
+	@echo "Built target Detections"
+.PHONY : CMakeFiles/Detections.dir/all
+
+# Include target in all.
+all: CMakeFiles/Detections.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/Detections.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/Detections.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles 0
+.PHONY : CMakeFiles/Detections.dir/rule
+
+# Convenience name for target.
+Detections: CMakeFiles/Detections.dir/rule
+.PHONY : Detections
+
+# clean rule for target.
+CMakeFiles/Detections.dir/clean:
+	$(MAKE) -f CMakeFiles/Detections.dir/build.make CMakeFiles/Detections.dir/clean
+.PHONY : CMakeFiles/Detections.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/Detections.dir/clean
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/main.dir
 
 # All Build rule for target.
 CMakeFiles/main.dir/all:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/depend
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles  1
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles  2
 	@echo "Built target main"
 .PHONY : CMakeFiles/main.dir/all
 
@@ -88,41 +123,6 @@ CMakeFiles/main.dir/clean:
 
 # clean rule for target.
 clean: CMakeFiles/main.dir/clean
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/opencv_handler.dir
-
-# All Build rule for target.
-CMakeFiles/opencv_handler.dir/all:
-	$(MAKE) -f CMakeFiles/opencv_handler.dir/build.make CMakeFiles/opencv_handler.dir/depend
-	$(MAKE) -f CMakeFiles/opencv_handler.dir/build.make CMakeFiles/opencv_handler.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles  2
-	@echo "Built target opencv_handler"
-.PHONY : CMakeFiles/opencv_handler.dir/all
-
-# Include target in all.
-all: CMakeFiles/opencv_handler.dir/all
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/opencv_handler.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/opencv_handler.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles 0
-.PHONY : CMakeFiles/opencv_handler.dir/rule
-
-# Convenience name for target.
-opencv_handler: CMakeFiles/opencv_handler.dir/rule
-.PHONY : opencv_handler
-
-# clean rule for target.
-CMakeFiles/opencv_handler.dir/clean:
-	$(MAKE) -f CMakeFiles/opencv_handler.dir/build.make CMakeFiles/opencv_handler.dir/clean
-.PHONY : CMakeFiles/opencv_handler.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/opencv_handler.dir/clean
 .PHONY : clean
 
 #=============================================================================
