@@ -23,6 +23,9 @@ namespace opencv_handler
       Mat img;
       Mat mask;
       Mat result;
+      struct sorting {
+        bool operator() (cv::Point pt1, cv::Point pt2) { return (pt1.y < pt2.y);}
+      } pts_sorting;
 
       bool intersection(Point2f o1, Point2f p1, Point2f o2, Point2f p2, Point2f &r);
       void findParallel(vector<int> &angles, vector<int> &indices);

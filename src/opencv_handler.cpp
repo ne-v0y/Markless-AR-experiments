@@ -255,18 +255,37 @@ namespace opencv_handler
     //cout << "bounding rectangel" << bounding << endl;
     vector<Point2f> useful;
     // TODO: use some good algorithm to find most useful four points
+    sort(line_intersc.begin(),  line_intersc.end(), image_processing::pts_sorting);
     for(size_t t =0; t < line_intersc.size(); t ++)
     {
       // TODO: find correct points
-      d = line_intersc[t] - line_intersc[(t+1)%line_intersc.size()];
-      if ((useful.size() < 4 ) and (sqrt(d.x*d.x+d.y*d.y) > (diff_/3*2)))
+      if (useful.empty() )
       {
-        useful.push_back(line_intersc[t]);
-        //useful.push_back(line_intersc[t+1]);
-        circle(copy, line_intersc[t], 8, Scalar(0,0,0), -1,8,0);
-        cout << line_intersc[t] << endl;
-        //circle(copy, line_intersc[t+1], 8, Scalar(0,0,0), -1,8,0);
+        d = line_intersc[t] - line_intersc[(t+1)%line_intersc.size()];
+        if ((useful.size() < 4 ) and (sqrt(d.x*d.x+d.y*d.y) > (diff_/3*2)))
+        {
+            useful.push_back(line_intersc[t]);
+            circle(copy, line_intersc[t], 8, Scalar(0,0,0), -1,8,0);
+            useful.push_back(line_intersc[t+1]);
+            circle(copy, line_intersc[t+1], 8, Scalar(0,0,0), -1,8,0);
+
+        }
       }
+      else
+      {
+        d = line_intersc[t] - useful[useful.size()-1];
+        if ((useful.size() < 4 ) and (sqrt(d.x*d.x+d.y*d.y) > (diff_/3*2)))
+        {
+            useful.push_back(line_intersc[t]);
+            circle(copy, line_intersc[t], 8, Scalar(0,0,0), -1,8,0);
+            //useful.push_back(line_intersc[t+1]);
+            //circle(copy, line_intersc[t+1], 8, Scalar(0,0,0), -1,8,0);
+
+
+        }
+      }
+
+
     }
 
 
@@ -279,8 +298,8 @@ namespace opencv_handler
       vector<Point2f> obj_corners(4);
       obj_corners[0] = cvPoint(0,0);
       obj_corners[1] = cvPoint(0, copy.rows-1);
-      obj_corners[2] = cvPoint(copy.cols-1, copy.rows-1);
-      obj_corners[3] = cvPoint(0, copy.rows-1);
+      obj_corners[2] = cvPoint(0, copy.rows-1);
+      obj_corners[3] = cvPoint(copy.cols-1, copy.rows-1);
       vector<Point2f> scene_corners(4);
       perspectiveTransform(obj_corners, scene_corners, H);
       cout << "scene_corners " << scene_corners << endl;
@@ -289,10 +308,10 @@ namespace opencv_handler
         circle(copy, scene_corners[i], 4, Scalar(0, 255 ,0), -1, 8, 0);
       }
 
-      line( copy, scene_corners[0], scene_corners[1], Scalar(0, 255, 0), 4 );
-      line( copy, scene_corners[1], scene_corners[2], Scalar( 0, 255, 0), 4 );
-      line( copy, scene_corners[2], scene_corners[3], Scalar( 0, 255, 0), 4 );
-      line( copy, scene_corners[3], scene_corners[0], Scalar( 0, 255, 0), 4 );
+      //line( copy, scene_corners[0], scene_corners[1], Scalar(0, 255, 0), 4 );
+      //line( copy, scene_corners[1], scene_corners[2], Scalar( 0, 255, 0), 4 );
+      //line( copy, scene_corners[2], scene_corners[3], Scalar( 0, 255, 0), 4 );
+      //line( copy, scene_corners[3], scene_corners[0], Scalar( 0, 255, 0), 4 );
 
 
       /* find the rvec and tevc*/
