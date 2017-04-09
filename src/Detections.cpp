@@ -177,7 +177,7 @@ namespace opencv_handler
   {
     Mat copy = Detections::img;
     //cvtColor(copy, copy, CV_BGR2GRAY);
-    blur(copy, copy, Size(3,3));
+    blur(copy, copy, Size(4,4));
     Canny(copy, Detections::mask, 10, 300, 3);
     vector<Vec4i> lines_pos;
     vector<Point2f> drawing_pts;
@@ -193,7 +193,7 @@ namespace opencv_handler
       pt2.x = lines_pos[i][2]; pt2.y = lines_pos[i][3];
       line( blank, pt1, pt2, Scalar(255,255,255), 1, CV_AA);
       d = pt1 - pt2;
-      if (sqrt(d.x*d.x + d.y*d.y) > 50)
+      if (sqrt(d.x*d.x + d.y*d.y) > 100)
       {
         drawing_pts.push_back(pt1);
         drawing_pts.push_back(pt2);
@@ -222,8 +222,6 @@ namespace opencv_handler
 
 
     //RotatedRect bounding = minAreaRect(line_intersc);
-    // TODO : only when lines intersections are larger than XX, check XX
-
     vector<Point2f> vertices, useful;
     if ( line_intersc.size() < 4)
       cout << "Not enough line intersections detected" << endl;
@@ -361,7 +359,7 @@ namespace opencv_handler
       cout << "tvec = " << tvec << endl;
     }
     else
-      cout << "Not enough feature points" << endl;
+      cout << "Not enough useful feature points" << endl;
     Detections::result = copy;
 
     namedWindow("result", WINDOW_AUTOSIZE);
@@ -400,8 +398,8 @@ namespace opencv_handler
             }
        }
     /// Showing the result
-    //namedWindow( "corners_window", CV_WINDOW_AUTOSIZE );
-    //imshow( "corners_window", dst_norm_scaled );
+    namedWindow( "corners_window", CV_WINDOW_AUTOSIZE );
+    imshow( "corners_window", dst_norm_scaled );
   }
 
 
