@@ -5,7 +5,8 @@
   * Author    : Noni Hua
   *
   * Brief     : Main function that runs markless augmented reality
-  *
+  *             Will call function from a finite-state machine and execute
+  *             Scheme: Detections -> Tracking -> Displaying
   */
 
 #include <stdio.h>
@@ -24,6 +25,6 @@ int main(int argc, char** argv)
   }
 
   /* create image processing instance*/
-  image_processing proc;
-  proc.imgStreamIn(atoi(argv[1]));
+  Detections detector;
+  detector.imgStreamIn(atoi(argv[1]));
 }

@@ -11,27 +11,29 @@
 namespace opencv_handler
 {
 
-  image_processing::image_processing()
+  Detections::Detections()
   {
 
   }
 
-  image_processing::~image_processing()
+  Detections::~Detections()
   {
 
   }
 
-  int image_processing::imgStreamIn(int arg)
+  int Detections::imgStreamIn(int arg)
   {
     if (arg == 3)
     {
       /* using image instead of video*/
-      image_processing::img = imread("./img/0.jpg", CV_LOAD_IMAGE_COLOR);
-      image_processing::houghLinePFinder();
+      Detections::using_img = true;
+      Detections::img = imread("./img/1.jpg", CV_LOAD_IMAGE_COLOR);
+      Detections::houghLinePFinder();
       waitKey(0);                                          // Wait for a keystroke in the window
     }
     else
     {
+      Detections::using_img = false;
       VideoCapture cap(arg);
       if (!cap.isOpened())
         return -1;
@@ -39,10 +41,10 @@ namespace opencv_handler
       // namedWindow("frame", WINDOW_AUTOSIZE);
       for (;;)
       {
-        cap >> image_processing::img;
-        image_processing::houghLinePFinder();
-        //image_processing::cornerFinder();
-        //imshow("frame", image_processing::img);
+        cap >> Detections::img;
+        Detections::houghLinePFinder();
+        //Detections::cornerFinder();
+        //imshow("frame", Detections::img);
         if (waitKey(30) == 'q') break;
       }
 
@@ -51,12 +53,12 @@ namespace opencv_handler
     return 0;
   }
 
-  // void image_processing::houghLineFinder()
+  // void Detections::houghLineFinder()
   // {
-  //   Mat copy = image_processing::img;
+  //   Mat copy = Detections::img;
   //   //cvtColor(copy, copy, CV_BGR2GRAY);
   //   //blur(copy, copy, Size(2,2));
-  //   Canny(copy, image_processing::mask, 10, 300, 3);
+  //   Canny(copy, Detections::mask, 10, 300, 3);
   //   vector<Vec2f> lines_pos;
   //   vector<Point2f> drawing_pts;
   //   HoughLines(mask, lines_pos, 1, CV_PI / 180, 120, 100, 50);
@@ -80,7 +82,7 @@ namespace opencv_handler
   //   vector<Point2f> line_intersc;
   //   for (size_t i = 0; i < drawing_pts.size(); i+=4)
   //   {
-  //     if (image_processing::intersection(drawing_pts[i], drawing_pts[i+1],
+  //     if (Detections::intersection(drawing_pts[i], drawing_pts[i+1],
   //                       drawing_pts[i+2],drawing_pts[i+3], inter_pt))
   //       line_intersc.push_back(inter_pt);
   //   }
@@ -89,8 +91,8 @@ namespace opencv_handler
   //   vector<Point2f> line_parallel;
   //   vector<int> line_angles;
   //   vector<int> parallel_indices;
-  //   image_processing::lineAngles(copy, drawing_pts, line_angles);
-  //   image_processing::findParallel(line_angles, parallel_indices);
+  //   Detections::lineAngles(copy, drawing_pts, line_angles);
+  //   Detections::findParallel(line_angles, parallel_indices);
   //   cout << "parallel indicies " << parallel_indices.size() << endl;
   //   for(size_t i = 0; i < parallel_indices.size(); ++i)
   //   {
@@ -161,7 +163,7 @@ namespace opencv_handler
   //   }
   //   else
   //     cout << "Not enough feature points" << endl;
-  //   image_processing::result = copy;
+  //   Detections::result = copy;
   //
   //   namedWindow("result", WINDOW_AUTOSIZE);
   //   imshow("result", copy);
@@ -171,17 +173,18 @@ namespace opencv_handler
 
 
   /* hough line P finder*/
-  void image_processing::houghLinePFinder()
+  void Detections::houghLinePFinder()
   {
-    Mat copy = image_processing::img;
+    Mat copy = Detections::img;
     //cvtColor(copy, copy, CV_BGR2GRAY);
-    //blur(copy, copy, Size(2,2));
-    Canny(copy, image_processing::mask, 10, 300, 3);
+    blur(copy, copy, Size(3,3));
+    Canny(copy, Detections::mask, 10, 300, 3);
     vector<Vec4i> lines_pos;
     vector<Point2f> drawing_pts;
     HoughLinesP(mask, lines_pos, 1, CV_PI / 180, 60, 30, 10 );
     //cout << "Length of the points = " << lines_pos.size() << endl;
     Mat blank(480, 640, CV_8UC1, Scalar(0,0,0));
+    Point2f d;
     for (size_t i = 0; i < lines_pos.size(); ++i)
     {
       //cout<< "found lines " << lines_pos[i][0] << " "<< lines_pos[i][1] << " "<< lines_pos[i][2] << " "<< lines_pos[i][3] <<endl;
@@ -189,8 +192,12 @@ namespace opencv_handler
       pt1.x = lines_pos[i][0]; pt1.y = lines_pos[i][1];
       pt2.x = lines_pos[i][2]; pt2.y = lines_pos[i][3];
       line( blank, pt1, pt2, Scalar(255,255,255), 1, CV_AA);
-      drawing_pts.push_back(pt1);
-      drawing_pts.push_back(pt2);
+      d = pt1 - pt2;
+      if (sqrt(d.x*d.x + d.y*d.y) > 50)
+      {
+        drawing_pts.push_back(pt1);
+        drawing_pts.push_back(pt2);
+      }
     }
 
     mask = blank + mask;
@@ -201,12 +208,10 @@ namespace opencv_handler
     {
       for (size_t j = i + 2; j < drawing_pts.size(); j+=2)
       {
-        if (image_processing::intersection(drawing_pts[i], drawing_pts[i+1], drawing_pts[j],drawing_pts[j+1], inter_pt))
+        if (Detections::intersection(drawing_pts[i], drawing_pts[i+1], drawing_pts[j],drawing_pts[j+1], inter_pt))
         {
           if ((inter_pt.x < 640) && (inter_pt.x > 0) && (inter_pt.y < 480) && (inter_pt.y > 0))
-          {
             line_intersc.push_back(inter_pt);
-          }
         }
       }
     }
@@ -220,7 +225,7 @@ namespace opencv_handler
     // TODO : only when lines intersections are larger than XX, check XX
 
     vector<Point2f> vertices, useful;
-    if (! line_intersc.size() < 4)
+    if ( line_intersc.size() < 4)
       cout << "Not enough line intersections detected" << endl;
     else
     {
@@ -245,7 +250,7 @@ namespace opencv_handler
       //cout << "bounding rectangel" << bounding << endl;
 
       // TODO: use some good algorithm to find most useful four points
-      sort(line_intersc.begin(),  line_intersc.end(), image_processing::pts_sorting);
+      sort(line_intersc.begin(),  line_intersc.end(), Detections::pts_sorting);
       for(size_t t =0; t < line_intersc.size(); t ++)
       {
         if (useful.empty() )
@@ -311,17 +316,24 @@ namespace opencv_handler
       /* find the rvec and tevc*/
       Mat cameraMatrix(3,3,DataType<double>::type);
       setIdentity(cameraMatrix);
+      // using calibrated parameters on my webcam
+      // [588.5540560194831, 0, 311.4898582826918, 0, 588.3201007355697, 249.379129698565, 0, 0, 1]
+      cameraMatrix.at<double>(0,0) = 588.5540560194831;
+      cameraMatrix.at<double>(0,2) = 311.4898582826918;
+      cameraMatrix.at<double>(1,1) = 588.3201007355697;
+      cameraMatrix.at<double>(1,2) = 249.379129698565;
       cout << "Initial cameraMatrix: " << cameraMatrix << endl;
 
-      Mat distCoeffs(4,1,DataType<double>::type);
-      distCoeffs.at<double>(0) = 0;
-      distCoeffs.at<double>(1) = 0;
-      distCoeffs.at<double>(2) = 0;
-      distCoeffs.at<double>(3) = 0;
+      Mat distCoeffs(5,1,DataType<double>::type);
+      // using calibrated params: [-0.06095721652204921, -0.09321965925237759, 0.01404094207269403, 0.003574047262481977, 0]
+      distCoeffs.at<double>(0) = -0.06095721652204921;
+      distCoeffs.at<double>(1) = -0.09321965925237759;
+      distCoeffs.at<double>(2) = 0.01404094207269403;
+      distCoeffs.at<double>(3) = 0.003574047262481977;
+      distCoeffs.at<double>(4) = 0;
 
       Mat rvec(3,1, DataType<double>::type);
       Mat tvec(3,1, DataType<double>::type);
-
 
       vector<Point3f> pts3d;
       Point3f tmp;
@@ -343,13 +355,14 @@ namespace opencv_handler
       tmp.y = 0;
       tmp.z = 0;
       pts3d.push_back(tmp);
-      solvePnPRansac(pts3d, scene_corners, cameraMatrix, distCoeffs, rvec, tvec);
+      //solvePnPRansac(pts3d, scene_corners, cameraMatrix, distCoeffs, rvec, tvec);
+      solvePnP(pts3d, scene_corners, cameraMatrix, distCoeffs, rvec, tvec);
       cout << "rvec = " << rvec << endl;
       cout << "tvec = " << tvec << endl;
     }
     else
       cout << "Not enough feature points" << endl;
-    image_processing::result = copy;
+    Detections::result = copy;
 
     namedWindow("result", WINDOW_AUTOSIZE);
     imshow("result", result);
@@ -358,10 +371,9 @@ namespace opencv_handler
   }
 
 
-
-  void image_processing::cornerFinder()
+  void Detections::cornerFinder()
   {
-    Mat copy = image_processing::img;
+    Mat copy = Detections::img;
     Mat dst, dst_norm, dst_norm_scaled;
     dst = Mat::zeros( copy.size(), CV_32FC1);
 
@@ -383,7 +395,7 @@ namespace opencv_handler
             {
               if( (int) dst_norm.at<float>(j,i) > 200 )
                 {
-                 circle( image_processing::img, Point( i, j ), 5,  Scalar(0), 2, 8, 0 );
+                 circle( Detections::img, Point( i, j ), 5,  Scalar(0), 2, 8, 0 );
                 }
             }
        }
@@ -395,7 +407,7 @@ namespace opencv_handler
 
   /* -------------------------------------------------------------------------*/
   /* some helper functions, references: https://github.com/opencv/opencv/blob/master/modules/imgproc/src/min_enclosing_triangle.cpp#L1380-L1424*/
-  bool image_processing::intersection(Point2f o1, Point2f p1, Point2f o2, Point2f p2, Point2f &r)
+  bool Detections::intersection(Point2f o1, Point2f p1, Point2f o2, Point2f p2, Point2f &r)
   {
     Point2f x = o2 - o1;
     Point2f d1 = p1 - o1;
@@ -411,7 +423,7 @@ namespace opencv_handler
     return true;
   }
 
-  void image_processing::findParallel(vector<int> &angles, vector<int> &indices)
+  void Detections::findParallel(vector<int> &angles, vector<int> &indices)
   {
     /* return indices for lines are parallel*/
     vector<float> tmp;
@@ -433,7 +445,7 @@ namespace opencv_handler
 
   }
 
-  void image_processing::lineAngles(Mat &img, vector<Point2f> points, vector<int> &angles)
+  void Detections::lineAngles(Mat &img, vector<Point2f> points, vector<int> &angles)
   {
     /* calculate all the angles of detected lines*/
     int angle;

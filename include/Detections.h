@@ -1,5 +1,5 @@
-#ifndef AR_OPENCV_HANDLER_H_
-#define AR_OPENCV_HANDLER_H_
+#ifndef AR_DETECTIONS_H_
+#define AR_DETECTIONS_H_
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
@@ -17,7 +17,7 @@ using namespace std;
 namespace opencv_handler
 {
 
-  class image_processing
+  class Detections
   {
     private:
       Mat img;
@@ -30,18 +30,22 @@ namespace opencv_handler
       bool intersection(Point2f o1, Point2f p1, Point2f o2, Point2f p2, Point2f &r);
       void findParallel(vector<int> &angles, vector<int> &indices);
       void lineAngles(Mat &img, vector<Point2f> points, vector<int> &angles);
-      void findVanishing(vector<Point2f> &line_pts);
 
     public:
-      image_processing();
-      ~image_processing();
+      Detections();
+      ~Detections();
+
+      bool using_img; // if only testing with an image, then not triggering tracking
+      bool detected;
+      bool tracking;
 
       int imgStreamIn( int arg);
       void houghLineFinder();
       void houghLinePFinder();
+      void findVanishing();
       void cornerFinder();
   };
 
 } // namespace opencv_handler
 
-#endif // AR_OPENCV_HANDLER_H_
+#endif // AR_DETECTIONS_H_
