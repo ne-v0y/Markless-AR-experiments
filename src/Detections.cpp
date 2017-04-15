@@ -3,7 +3,8 @@
   * do image processing
   * display results
   *
-  *
+  * Author: Noni YiFan Hua
+  * Date: Feb 23 2017
   */
 
 #include "Detections.h"
@@ -354,7 +355,7 @@ namespace opencv_handler
       tmp.z = 0;
       pts3d.push_back(tmp);
       //solvePnPRansac(pts3d, scene_corners, cameraMatrix, distCoeffs, rvec, tvec);
-      solvePnP(pts3d, scene_corners, cameraMatrix, distCoeffs, rvec, tvec);
+      solvePnP(pts3d, useful, cameraMatrix, distCoeffs, rvec, tvec);
       cout << "rvec = " << rvec << endl;
       cout << "tvec = " << tvec << endl;
     }

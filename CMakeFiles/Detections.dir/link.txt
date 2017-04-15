@@ -1,2 +1,2 @@
-/usr/bin/ar cr libDetections.a  CMakeFiles/Detections.dir/src/Detections.cpp.o
+/usr/bin/ar qc libDetections.a  CMakeFiles/Detections.dir/src/Detections.cpp.o
 /usr/bin/ranlib libDetections.a
