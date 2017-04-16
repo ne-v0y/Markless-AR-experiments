@@ -32,6 +32,9 @@ int main(int argc, char** argv)
   mydetector.imgStreamIn(atoi(argv[1]));
   if (mydetector.detected)
   {
+    cout << "here" << endl;
+    mytracker.ROI = mydetector.bounding_box;
+    mytracker.frame = mydetector.result;
     mytracker.Start();
   }
 

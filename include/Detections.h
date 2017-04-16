@@ -22,7 +22,6 @@ namespace opencv_handler
     private:
       Mat img;
       Mat mask;
-      Mat result;
       struct sorting {
         bool operator() (cv::Point pt1, cv::Point pt2) { return (pt1.y < pt2.y);}
       } pts_sorting;
@@ -35,9 +34,11 @@ namespace opencv_handler
       Detections();
       ~Detections();
 
+      Mat result;
       bool using_img; // if only testing with an image, then not triggering tracking
       bool detected;
       int success_count;
+      Rect2d bounding_box;
 
       int imgStreamIn( int arg);
       void houghLineFinder();

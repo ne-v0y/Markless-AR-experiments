@@ -54,124 +54,6 @@ namespace opencv_handler
     return 0;
   }
 
-  // void Detections::houghLineFinder()
-  // {
-  //   Mat copy = Detections::img;
-  //   //cvtColor(copy, copy, CV_BGR2GRAY);
-  //   //blur(copy, copy, Size(2,2));
-  //   Canny(copy, Detections::mask, 10, 300, 3);
-  //   vector<Vec2f> lines_pos;
-  //   vector<Point2f> drawing_pts;
-  //   HoughLines(mask, lines_pos, 1, CV_PI / 180, 120, 100, 50);
-  //   for (size_t i = 0; i < lines_pos.size(); ++i)
-  //   {
-  //     float rho = lines_pos[i][0], theta = lines_pos[i][1];
-  //     Point pt1, pt2;
-  //     double a = cos(theta), b = sin(theta);
-  //     double x0 = a*rho, y0 = b*rho;
-  //     pt1.x = cvRound(x0 + 1000*(-b));
-  //     pt1.y = cvRound(y0 + 1000*(a));
-  //     pt2.x = cvRound(x0 - 1000*(-b));
-  //     pt2.y = cvRound(y0 - 1000*(a));
-  //     line( copy, pt1, pt2, Scalar(0,0,255), 1, CV_AA);
-  //     drawing_pts.push_back(pt1);
-  //     drawing_pts.push_back(pt2);
-  //   }
-  //
-  //   /* find intersection points*/
-  //   Point2f inter_pt;
-  //   vector<Point2f> line_intersc;
-  //   for (size_t i = 0; i < drawing_pts.size(); i+=4)
-  //   {
-  //     if (Detections::intersection(drawing_pts[i], drawing_pts[i+1],
-  //                       drawing_pts[i+2],drawing_pts[i+3], inter_pt))
-  //       line_intersc.push_back(inter_pt);
-  //   }
-  //
-  //   /* find parallel lines*/
-  //   vector<Point2f> line_parallel;
-  //   vector<int> line_angles;
-  //   vector<int> parallel_indices;
-  //   Detections::lineAngles(copy, drawing_pts, line_angles);
-  //   Detections::findParallel(line_angles, parallel_indices);
-  //   cout << "parallel indicies " << parallel_indices.size() << endl;
-  //   for(size_t i = 0; i < parallel_indices.size(); ++i)
-  //   {
-  //     if ( line_parallel.size() < line_intersc.size())
-  //       line_parallel.push_back(drawing_pts[parallel_indices[i]*2]);
-  //     if ( line_parallel.size() < line_intersc.size())
-  //       line_parallel.push_back(drawing_pts[parallel_indices[i]*2+1]);
-  //   }
-  //
-  //   cout << "angle size = " << line_parallel.size() << " " << "intersection size = " << line_intersc.size() << endl;
-  //
-  //   if( line_intersc.size() >= 4 and line_parallel.size() >= 4)
-  //   {
-  //     /* find homograph based on the interest points*/
-  //     Mat H = findHomography( line_intersc, line_parallel, CV_RANSAC );
-  //     vector<Point2f> obj_corners(4);
-  //     obj_corners[0] = cvPoint(0,0);
-  //     obj_corners[1] = cvPoint(copy.cols, 0);
-  //     obj_corners[2] = cvPoint(copy.cols, copy.rows);
-  //     obj_corners[3] = cvPoint(0, copy.rows);
-  //     vector<Point2f> scene_corners(4);
-  //     perspectiveTransform(obj_corners, scene_corners, H);
-  //
-  //     /* find the rvec and tevc*/
-  //     Mat cameraMatrix(3,3,DataType<double>::type);
-  //     setIdentity(cameraMatrix);
-  //     cout << "Initial cameraMatrix: " << cameraMatrix << endl;
-  //
-  //     Mat distCoeffs(4,1,DataType<double>::type);
-  //     distCoeffs.at<double>(0) = 0;
-  //     distCoeffs.at<double>(1) = 0;
-  //     distCoeffs.at<double>(2) = 0;
-  //     distCoeffs.at<double>(3) = 0;
-  //
-  //     Mat rvec(3,1, DataType<double>::type);
-  //     Mat tvec(3,1, DataType<double>::type);
-  //
-  //
-  //     vector<Point3f> pts3d;
-  //     Point3f tmp;
-  //     int rows = copy.rows;
-  //     int cols = copy.cols;
-  //     tmp.x = 0;
-  //     tmp.y = 0;
-  //     tmp.z = 0;
-  //     pts3d.push_back(tmp);
-  //     tmp.x = 0;
-  //     tmp.y = cols - 1;
-  //     tmp.z = 0;
-  //     pts3d.push_back(tmp);
-  //     tmp.x = rows - 1;
-  //     tmp.y = cols - 1;
-  //     tmp.z = 0;
-  //     pts3d.push_back(tmp);
-  //     tmp.x = rows - 1;
-  //     tmp.y = 0;
-  //     tmp.z = 0;
-  //     pts3d.push_back(tmp);
-  //     solvePnPRansac(pts3d, obj_corners, cameraMatrix, distCoeffs, rvec, tvec);
-  //     cout << "rvec = " << rvec << endl;
-  //     cout << "tvec = " << tvec << endl;
-  //
-  //     line( copy, scene_corners[0] + Point2f( copy.cols, 0), scene_corners[1] + Point2f( copy.cols, 0), Scalar(0, 255, 0), 4 );
-  //     line( copy, scene_corners[1] + Point2f( copy.cols, 0), scene_corners[2] + Point2f( copy.cols, 0), Scalar( 0, 255, 0), 4 );
-  //     line( copy, scene_corners[2] + Point2f( copy.cols, 0), scene_corners[3] + Point2f( copy.cols, 0), Scalar( 0, 255, 0), 4 );
-  //     line( copy, scene_corners[3] + Point2f( copy.cols, 0), scene_corners[0] + Point2f( copy.cols, 0), Scalar( 0, 255, 0), 4 );
-  //
-  //   }
-  //   else
-  //     cout << "Not enough feature points" << endl;
-  //   Detections::result = copy;
-  //
-  //   namedWindow("result", WINDOW_AUTOSIZE);
-  //   imshow("result", copy);
-  //   imshow("mask", mask);
-  // }
-
-
 
   /* hough line P finder*/
   void Detections::houghLinePFinder()
@@ -201,7 +83,7 @@ namespace opencv_handler
       }
     }
 
-    mask = blank + mask;
+    //mask = blank + mask;
     /* find intersection points*/
     Point2f inter_pt;
     vector<Point2f> line_intersc;
@@ -221,14 +103,17 @@ namespace opencv_handler
     for (size_t t = 0; t < line_intersc.size(); t ++)
       circle(copy, line_intersc[t], 4, Scalar(0,0,255), -1, 8, 0);
 
-
     //RotatedRect bounding = minAreaRect(line_intersc);
     vector<Point2f> vertices, useful;
     if ( line_intersc.size() < 4)
       cout << "Not enough line intersections detected" << endl;
     else
     {
-      Rect bounding = boundingRect(line_intersc);
+      Rect2d bounding = boundingRect(line_intersc);
+
+      /* passing the bounding box to ROI*/
+      /* TODO: add a good filtering and recovery scheme*/
+      Detections::bounding_box = bounding;
 
       vertices.push_back(Point2f(bounding.x, bounding.y));
       vertices.push_back(Point2f(bounding.x + bounding.width, bounding.y));
@@ -283,11 +168,11 @@ namespace opencv_handler
     }
 
 
-
     cout << "original = " << vertices.size() << " target = " << useful.size() << " " << endl;
     //rectangle(copy, bounding, Scalar(200,200,0), 2, 8, 0 );
     if( vertices.size() >= 4 and useful.size() >= 4)
     {
+      Detections::detected = true;
       /* find homograph based on the interest points*/
       Mat H = findHomography( vertices, useful, CV_RANSAC, 5);
       vector<Point2f> obj_corners(4);

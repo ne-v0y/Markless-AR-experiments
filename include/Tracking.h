@@ -16,14 +16,13 @@ namespace opencv_handler
 {
   class Tracking
   {
-  private:
-    Mat frame;
-    Rect2d ROI;
 
   public:
     Tracking();
     ~Tracking();
 
+    Mat frame;
+    Rect2d ROI;
     String method;
     int Start();
   };
