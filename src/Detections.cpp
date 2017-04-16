@@ -182,76 +182,81 @@ namespace opencv_handler
       {
         Detections::tracking();
       }
-      /* find homograph based on the interest points*/
-      Mat H = findHomography( vertices, useful, CV_RANSAC, 5);
-      vector<Point2f> obj_corners(4);
-      obj_corners[0] = cvPoint(0,0);
-      obj_corners[1] = cvPoint(0, copy.rows-1);
-      obj_corners[2] = cvPoint(copy.cols-1, copy.rows-1);
-      obj_corners[3] = cvPoint(copy.cols-1, 0);
-      vector<Point2f> scene_corners(4);
-      perspectiveTransform(obj_corners, scene_corners, H);
-      cout << "scene_corners " << scene_corners << endl;
-      for (size_t i = 0; i < scene_corners.size(); i ++)
+      else
       {
-        circle(copy, scene_corners[i], 4, Scalar(0, 255 ,0), -1, 8, 0);
-        putText(copy, to_string(i), scene_corners[i], FONT_HERSHEY_SIMPLEX, 0.5, Scalar(255,0,255), 2, 3,false );
+        /* find homograph based on the interest points*/
+        Mat H = findHomography( vertices, useful, CV_RANSAC, 5);
+        vector<Point2f> obj_corners(4);
+        obj_corners[0] = cvPoint(0,0);
+        obj_corners[1] = cvPoint(0, copy.rows-1);
+        obj_corners[2] = cvPoint(copy.cols-1, copy.rows-1);
+        obj_corners[3] = cvPoint(copy.cols-1, 0);
+        vector<Point2f> scene_corners(4);
+        perspectiveTransform(obj_corners, scene_corners, H);
+        cout << "scene_corners " << scene_corners << endl;
+        for (size_t i = 0; i < scene_corners.size(); i ++)
+        {
+          circle(copy, scene_corners[i], 4, Scalar(0, 255 ,0), -1, 8, 0);
+          putText(copy, to_string(i), scene_corners[i], FONT_HERSHEY_SIMPLEX, 0.5, Scalar(255,0,255), 2, 3,false );
 
-      }
+        }
 
-      //polylines(copy, scene_corners, true, Scalar(0,255,0), 1, 8, 0 );
-      line( copy, scene_corners[0], scene_corners[2], Scalar(0, 255, 0), 4 );
-      line( copy, scene_corners[2], scene_corners[1], Scalar( 0, 255, 0), 4 );
-      line( copy, scene_corners[1], scene_corners[3], Scalar( 0, 255, 0), 4 );
-      line( copy, scene_corners[3], scene_corners[0], Scalar( 0, 255, 0), 4 );
+        //polylines(copy, scene_corners, true, Scalar(0,255,0), 1, 8, 0 );
+        line( copy, scene_corners[0], scene_corners[2], Scalar(0, 255, 0), 4 );
+        line( copy, scene_corners[2], scene_corners[1], Scalar( 0, 255, 0), 4 );
+        line( copy, scene_corners[1], scene_corners[3], Scalar( 0, 255, 0), 4 );
+        line( copy, scene_corners[3], scene_corners[0], Scalar( 0, 255, 0), 4 );
 
 
-      /* find the rvec and tevc*/
-      Mat cameraMatrix(3,3,DataType<double>::type);
-      setIdentity(cameraMatrix);
-      // using calibrated parameters on my webcam
-      // [588.5540560194831, 0, 311.4898582826918, 0, 588.3201007355697, 249.379129698565, 0, 0, 1]
-      cameraMatrix.at<double>(0,0) = 588.5540560194831;
-      cameraMatrix.at<double>(0,2) = 311.4898582826918;
-      cameraMatrix.at<double>(1,1) = 588.3201007355697;
-      cameraMatrix.at<double>(1,2) = 249.379129698565;
-      cout << "Initial cameraMatrix: " << cameraMatrix << endl;
+        /* find the rvec and tevc*/
+        Mat cameraMatrix(3,3,DataType<double>::type);
+        setIdentity(cameraMatrix);
+        // using calibrated parameters on my webcam
+        // [588.5540560194831, 0, 311.4898582826918, 0, 588.3201007355697, 249.379129698565, 0, 0, 1]
+        cameraMatrix.at<double>(0,0) = 588.5540560194831;
+        cameraMatrix.at<double>(0,2) = 311.4898582826918;
+        cameraMatrix.at<double>(1,1) = 588.3201007355697;
+        cameraMatrix.at<double>(1,2) = 249.379129698565;
+        cout << "Initial cameraMatrix: " << cameraMatrix << endl;
 
-      Mat distCoeffs(5,1,DataType<double>::type);
-      // using calibrated params: [-0.06095721652204921, -0.09321965925237759, 0.01404094207269403, 0.003574047262481977, 0]
-      distCoeffs.at<double>(0) = -0.06095721652204921;
-      distCoeffs.at<double>(1) = -0.09321965925237759;
-      distCoeffs.at<double>(2) = 0.01404094207269403;
-      distCoeffs.at<double>(3) = 0.003574047262481977;
-      distCoeffs.at<double>(4) = 0;
+        Mat distCoeffs(5,1,DataType<double>::type);
+        // using calibrated params: [-0.06095721652204921, -0.09321965925237759, 0.01404094207269403, 0.003574047262481977, 0]
+        distCoeffs.at<double>(0) = -0.06095721652204921;
+        distCoeffs.at<double>(1) = -0.09321965925237759;
+        distCoeffs.at<double>(2) = 0.01404094207269403;
+        distCoeffs.at<double>(3) = 0.003574047262481977;
+        distCoeffs.at<double>(4) = 0;
 
-      Mat rvec(3,1, DataType<double>::type);
-      Mat tvec(3,1, DataType<double>::type);
+        Mat rvec(3,1, DataType<double>::type);
+        Mat tvec(3,1, DataType<double>::type);
 
-      vector<Point3f> pts3d;
-      Point3f tmp;
-      int rows = copy.rows;
-      int cols = copy.cols;
-      tmp.x = 0;
-      tmp.y = 0;
-      tmp.z = 0;
-      pts3d.push_back(tmp);
-      tmp.x = 0;
-      tmp.y = cols - 1;
-      tmp.z = 0;
-      pts3d.push_back(tmp);
-      tmp.x = rows - 1;
-      tmp.y = cols - 1;
-      tmp.z = 0;
-      pts3d.push_back(tmp);
-      tmp.x = rows - 1;
-      tmp.y = 0;
-      tmp.z = 0;
-      pts3d.push_back(tmp);
-      //solvePnPRansac(pts3d, scene_corners, cameraMatrix, distCoeffs, rvec, tvec);
-      solvePnP(pts3d, useful, cameraMatrix, distCoeffs, rvec, tvec);
-      cout << "rvec = " << rvec << endl;
-      cout << "tvec = " << tvec << endl;
+        vector<Point3f> pts3d;
+        Point3f tmp;
+        int rows = copy.rows;
+        int cols = copy.cols;
+        tmp.x = 0;
+        tmp.y = 0;
+        tmp.z = 0;
+        pts3d.push_back(tmp);
+        tmp.x = 0;
+        tmp.y = cols - 1;
+        tmp.z = 0;
+        pts3d.push_back(tmp);
+        tmp.x = rows - 1;
+        tmp.y = cols - 1;
+        tmp.z = 0;
+        pts3d.push_back(tmp);
+        tmp.x = rows - 1;
+        tmp.y = 0;
+        tmp.z = 0;
+        pts3d.push_back(tmp);
+        //solvePnPRansac(pts3d, scene_corners, cameraMatrix, distCoeffs, rvec, tvec);
+        solvePnP(pts3d, useful, cameraMatrix, distCoeffs, rvec, tvec);
+        cout << "rvec = " << rvec << endl;
+        cout << "tvec = " << tvec << endl;
+      } /* end of tracking condition*/
+
+
     }
     else
       cout << "Not enough useful feature points" << endl;
