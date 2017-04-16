@@ -60,43 +60,6 @@ CMAKE_SOURCE_DIR = /home/ka/Desktop/414/Markless-AR-experiments
 CMAKE_BINARY_DIR = /home/ka/Desktop/414/Markless-AR-experiments
 
 #=============================================================================
-# Target rules for target CMakeFiles/main.dir
-
-# All Build rule for target.
-CMakeFiles/main.dir/all:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/depend
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles --progress-num=3,4 "Built target main"
-.PHONY : CMakeFiles/main.dir/all
-
-# Include target in all.
-all: CMakeFiles/main.dir/all
-
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/main.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/main.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles 0
-.PHONY : CMakeFiles/main.dir/rule
-
-# Convenience name for target.
-main: CMakeFiles/main.dir/rule
-
-.PHONY : main
-
-# clean rule for target.
-CMakeFiles/main.dir/clean:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/clean
-.PHONY : CMakeFiles/main.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/main.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
 # Target rules for target CMakeFiles/Detections.dir
 
 # All Build rule for target.
@@ -130,6 +93,117 @@ CMakeFiles/Detections.dir/clean:
 
 # clean rule for target.
 clean: CMakeFiles/Detections.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/Tracking.dir
+
+# All Build rule for target.
+CMakeFiles/Tracking.dir/all:
+	$(MAKE) -f CMakeFiles/Tracking.dir/build.make CMakeFiles/Tracking.dir/depend
+	$(MAKE) -f CMakeFiles/Tracking.dir/build.make CMakeFiles/Tracking.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles --progress-num=5,6 "Built target Tracking"
+.PHONY : CMakeFiles/Tracking.dir/all
+
+# Include target in all.
+all: CMakeFiles/Tracking.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/Tracking.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/Tracking.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles 0
+.PHONY : CMakeFiles/Tracking.dir/rule
+
+# Convenience name for target.
+Tracking: CMakeFiles/Tracking.dir/rule
+
+.PHONY : Tracking
+
+# clean rule for target.
+CMakeFiles/Tracking.dir/clean:
+	$(MAKE) -f CMakeFiles/Tracking.dir/build.make CMakeFiles/Tracking.dir/clean
+.PHONY : CMakeFiles/Tracking.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/Tracking.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/Graphics.dir
+
+# All Build rule for target.
+CMakeFiles/Graphics.dir/all:
+	$(MAKE) -f CMakeFiles/Graphics.dir/build.make CMakeFiles/Graphics.dir/depend
+	$(MAKE) -f CMakeFiles/Graphics.dir/build.make CMakeFiles/Graphics.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles --progress-num=3,4 "Built target Graphics"
+.PHONY : CMakeFiles/Graphics.dir/all
+
+# Include target in all.
+all: CMakeFiles/Graphics.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/Graphics.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/Graphics.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles 0
+.PHONY : CMakeFiles/Graphics.dir/rule
+
+# Convenience name for target.
+Graphics: CMakeFiles/Graphics.dir/rule
+
+.PHONY : Graphics
+
+# clean rule for target.
+CMakeFiles/Graphics.dir/clean:
+	$(MAKE) -f CMakeFiles/Graphics.dir/build.make CMakeFiles/Graphics.dir/clean
+.PHONY : CMakeFiles/Graphics.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/Graphics.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/main.dir
+
+# All Build rule for target.
+CMakeFiles/main.dir/all:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/depend
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles --progress-num=7,8 "Built target main"
+.PHONY : CMakeFiles/main.dir/all
+
+# Include target in all.
+all: CMakeFiles/main.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/main.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/main.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles 0
+.PHONY : CMakeFiles/main.dir/rule
+
+# Convenience name for target.
+main: CMakeFiles/main.dir/rule
+
+.PHONY : main
+
+# clean rule for target.
+CMakeFiles/main.dir/clean:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/clean
+.PHONY : CMakeFiles/main.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/main.dir/clean
 
 .PHONY : clean
 

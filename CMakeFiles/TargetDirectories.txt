@@ -1,4 +1,6 @@
 /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles/edit_cache.dir
-/home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles/main.dir
 /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles/rebuild_cache.dir
 /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles/Detections.dir
+/home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles/Tracking.dir
+/home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles/Graphics.dir
+/home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles/main.dir

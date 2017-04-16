@@ -111,19 +111,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named main
-
-# Build rule for target.
-main: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 main
-.PHONY : main
-
-# fast build rule for target.
-main/fast:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
-.PHONY : main/fast
-
-#=============================================================================
 # Target rules for targets named Detections
 
 # Build rule for target.
@@ -135,6 +122,45 @@ Detections: cmake_check_build_system
 Detections/fast:
 	$(MAKE) -f CMakeFiles/Detections.dir/build.make CMakeFiles/Detections.dir/build
 .PHONY : Detections/fast
+
+#=============================================================================
+# Target rules for targets named Tracking
+
+# Build rule for target.
+Tracking: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Tracking
+.PHONY : Tracking
+
+# fast build rule for target.
+Tracking/fast:
+	$(MAKE) -f CMakeFiles/Tracking.dir/build.make CMakeFiles/Tracking.dir/build
+.PHONY : Tracking/fast
+
+#=============================================================================
+# Target rules for targets named Graphics
+
+# Build rule for target.
+Graphics: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Graphics
+.PHONY : Graphics
+
+# fast build rule for target.
+Graphics/fast:
+	$(MAKE) -f CMakeFiles/Graphics.dir/build.make CMakeFiles/Graphics.dir/build
+.PHONY : Graphics/fast
+
+#=============================================================================
+# Target rules for targets named main
+
+# Build rule for target.
+main: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 main
+.PHONY : main
+
+# fast build rule for target.
+main/fast:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
+.PHONY : main/fast
 
 src/Detections.o: src/Detections.cpp.o
 
@@ -162,6 +188,60 @@ src/Detections.s: src/Detections.cpp.s
 src/Detections.cpp.s:
 	$(MAKE) -f CMakeFiles/Detections.dir/build.make CMakeFiles/Detections.dir/src/Detections.cpp.s
 .PHONY : src/Detections.cpp.s
+
+src/Graphics.o: src/Graphics.cpp.o
+
+.PHONY : src/Graphics.o
+
+# target to build an object file
+src/Graphics.cpp.o:
+	$(MAKE) -f CMakeFiles/Graphics.dir/build.make CMakeFiles/Graphics.dir/src/Graphics.cpp.o
+.PHONY : src/Graphics.cpp.o
+
+src/Graphics.i: src/Graphics.cpp.i
+
+.PHONY : src/Graphics.i
+
+# target to preprocess a source file
+src/Graphics.cpp.i:
+	$(MAKE) -f CMakeFiles/Graphics.dir/build.make CMakeFiles/Graphics.dir/src/Graphics.cpp.i
+.PHONY : src/Graphics.cpp.i
+
+src/Graphics.s: src/Graphics.cpp.s
+
+.PHONY : src/Graphics.s
+
+# target to generate assembly for a file
+src/Graphics.cpp.s:
+	$(MAKE) -f CMakeFiles/Graphics.dir/build.make CMakeFiles/Graphics.dir/src/Graphics.cpp.s
+.PHONY : src/Graphics.cpp.s
+
+src/Tracking.o: src/Tracking.cpp.o
+
+.PHONY : src/Tracking.o
+
+# target to build an object file
+src/Tracking.cpp.o:
+	$(MAKE) -f CMakeFiles/Tracking.dir/build.make CMakeFiles/Tracking.dir/src/Tracking.cpp.o
+.PHONY : src/Tracking.cpp.o
+
+src/Tracking.i: src/Tracking.cpp.i
+
+.PHONY : src/Tracking.i
+
+# target to preprocess a source file
+src/Tracking.cpp.i:
+	$(MAKE) -f CMakeFiles/Tracking.dir/build.make CMakeFiles/Tracking.dir/src/Tracking.cpp.i
+.PHONY : src/Tracking.cpp.i
+
+src/Tracking.s: src/Tracking.cpp.s
+
+.PHONY : src/Tracking.s
+
+# target to generate assembly for a file
+src/Tracking.cpp.s:
+	$(MAKE) -f CMakeFiles/Tracking.dir/build.make CMakeFiles/Tracking.dir/src/Tracking.cpp.s
+.PHONY : src/Tracking.cpp.s
 
 src/main.o: src/main.cpp.o
 
@@ -197,12 +277,20 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
-	@echo "... main"
 	@echo "... rebuild_cache"
 	@echo "... Detections"
+	@echo "... Tracking"
+	@echo "... Graphics"
+	@echo "... main"
 	@echo "... src/Detections.o"
 	@echo "... src/Detections.i"
 	@echo "... src/Detections.s"
+	@echo "... src/Graphics.o"
+	@echo "... src/Graphics.i"
+	@echo "... src/Graphics.s"
+	@echo "... src/Tracking.o"
+	@echo "... src/Tracking.i"
+	@echo "... src/Tracking.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

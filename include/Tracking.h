@@ -1,14 +1,12 @@
 #ifndef AR_TRACKING_H_
 #define AR_TRACKING_H_
 
-#include <opencv2/opencv.hpp>
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/objdetect/objdetect.hpp>
-#include <opencv2/video/video.hpp>
-#include <stdio.h>
-#include <algorithm>
+#include <opencv2/core/utility.hpp>
+#include <opencv2/tracking.hpp>
+#include <opencv2/videoio.hpp>
+#include <opencv2/highgui.hpp>
+#include <iostream>
+#include <cstring>
 #include <string>
 
 using namespace cv;
@@ -19,10 +17,15 @@ namespace opencv_handler
   class Tracking
   {
   private:
-    ;
+    Mat frame;
+    Rect2d ROI;
 
   public:
-    ;
+    Tracking();
+    ~Tracking();
+
+    String method;
+    int Start();
   };
 } // namespace opencv_handler
 

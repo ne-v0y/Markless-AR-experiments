@@ -20,9 +20,19 @@
 #include <vector>
 #include <eigen/Eigen/Dense>
 
+using namespace std;
 
 namespace opengl_handler{
-  
+
+  class Graphics
+  {
+    private:
+      ;
+    public:
+      Graphics();
+      ~Graphics();
+
+  };
 
 }
 

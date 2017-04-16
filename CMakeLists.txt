@@ -5,13 +5,21 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # ### Build ###
 ###############
-find_package( OpenCV 3.2.0 REQUIRED)
+# default using 3.2.0
+#SET(OpenCV_INCLUDE_DIRS "/usr/local/include/opencv;/usr/local/include/opencv2")
+#SET(OpenCV_LIB_DIR "/usr/local/lib")
+find_package( OpenCV REQUIRED)
 
 include_directories(include ${OpenCV_INCLUDE_DIRS} )
 
 # ### opencv_handler ###
 ########################
 add_library( Detections src/Detections.cpp )
+add_library( Tracking src/Tracking.cpp )
+
+# ### opengl_handler ###
+########################
+add_library( Graphics src/Graphics.cpp )
 
 # ### main ###
 ##############

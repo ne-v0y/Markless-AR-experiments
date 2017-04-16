@@ -6,5 +6,5 @@ CXX_FLAGS =  -std=c++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/ka/Desktop/414/Markless-AR-experiments/include -isystem /opt/ros/kinetic/include/opencv-3.2.0-dev -isystem /opt/ros/kinetic/include/opencv-3.2.0-dev/opencv 
+CXX_INCLUDES = -I/home/ka/Desktop/414/Markless-AR-experiments/include -isystem /usr/local/include -isystem /usr/local/include/opencv 
 

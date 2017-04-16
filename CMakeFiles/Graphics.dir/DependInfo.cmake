@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/ka/Desktop/414/Markless-AR-experiments/src/main.cpp" "/home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles/main.dir/src/main.cpp.o"
+  "/home/ka/Desktop/414/Markless-AR-experiments/src/Graphics.cpp" "/home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles/Graphics.dir/src/Graphics.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

@@ -37,7 +37,7 @@ namespace opencv_handler
 
       bool using_img; // if only testing with an image, then not triggering tracking
       bool detected;
-      bool tracking;
+      int success_count;
 
       int imgStreamIn( int arg);
       void houghLineFinder();
