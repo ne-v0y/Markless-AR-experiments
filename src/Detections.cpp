@@ -14,6 +14,11 @@ namespace opencv_handler
 
   Detections::Detections()
   {
+    Detections::tracker = Tracker::create("TLD");
+    if (Detections::tracker == NULL)
+    {
+      cout << "Error: can't initialize tracker." << endl;
+    }
 
   }
 
@@ -53,7 +58,6 @@ namespace opencv_handler
 
     return 0;
   }
-
 
   /* hough line P finder*/
   void Detections::houghLinePFinder()
@@ -173,6 +177,11 @@ namespace opencv_handler
     if( vertices.size() >= 4 and useful.size() >= 4)
     {
       Detections::detected = true;
+
+      if (Detections::detected)
+      {
+        Detections::tracking();
+      }
       /* find homograph based on the interest points*/
       Mat H = findHomography( vertices, useful, CV_RANSAC, 5);
       vector<Point2f> obj_corners(4);
@@ -254,6 +263,18 @@ namespace opencv_handler
     imshow("blank", blank);
   }
 
+  int Detections::tracking()
+  {
+    cout << "Tracking" << endl;
+    Detections::tracker->init(Detections::result, Detections::bounding_box);
+
+    Detections::tracker->update(Detections::result,Detections::bounding_box);
+    rectangle(Detections::result,Detections::bounding_box, Scalar( 255, 0, 0 ), 2, 1 );
+    //imshow("tracker",Tracking::frame);
+
+
+    return 0;
+  }
 
   void Detections::cornerFinder()
   {

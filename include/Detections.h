@@ -7,6 +7,9 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/objdetect/objdetect.hpp>
 #include <opencv2/video/video.hpp>
+#include <opencv2/core/utility.hpp>
+#include <opencv2/tracking.hpp>
+#include <opencv2/videoio.hpp>
 #include <stdio.h>
 #include <algorithm>
 #include <string>
@@ -22,6 +25,9 @@ namespace opencv_handler
     private:
       Mat img;
       Mat mask;
+      Mat result;
+      Rect2d bounding_box;
+      String tracker_method;
       struct sorting {
         bool operator() (cv::Point pt1, cv::Point pt2) { return (pt1.y < pt2.y);}
       } pts_sorting;
@@ -34,17 +40,19 @@ namespace opencv_handler
       Detections();
       ~Detections();
 
-      Mat result;
       bool using_img; // if only testing with an image, then not triggering tracking
       bool detected;
       int success_count;
-      Rect2d bounding_box;
+
+      Ptr<Tracker> tracker;
 
       int imgStreamIn( int arg);
       void houghLineFinder();
       void houghLinePFinder();
       void findVanishing();
       void cornerFinder();
+
+      int tracking();
   };
 
 } // namespace opencv_handler

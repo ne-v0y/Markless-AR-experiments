@@ -124,19 +124,6 @@ Detections/fast:
 .PHONY : Detections/fast
 
 #=============================================================================
-# Target rules for targets named Tracking
-
-# Build rule for target.
-Tracking: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 Tracking
-.PHONY : Tracking
-
-# fast build rule for target.
-Tracking/fast:
-	$(MAKE) -f CMakeFiles/Tracking.dir/build.make CMakeFiles/Tracking.dir/build
-.PHONY : Tracking/fast
-
-#=============================================================================
 # Target rules for targets named Graphics
 
 # Build rule for target.
@@ -216,33 +203,6 @@ src/Graphics.cpp.s:
 	$(MAKE) -f CMakeFiles/Graphics.dir/build.make CMakeFiles/Graphics.dir/src/Graphics.cpp.s
 .PHONY : src/Graphics.cpp.s
 
-src/Tracking.o: src/Tracking.cpp.o
-
-.PHONY : src/Tracking.o
-
-# target to build an object file
-src/Tracking.cpp.o:
-	$(MAKE) -f CMakeFiles/Tracking.dir/build.make CMakeFiles/Tracking.dir/src/Tracking.cpp.o
-.PHONY : src/Tracking.cpp.o
-
-src/Tracking.i: src/Tracking.cpp.i
-
-.PHONY : src/Tracking.i
-
-# target to preprocess a source file
-src/Tracking.cpp.i:
-	$(MAKE) -f CMakeFiles/Tracking.dir/build.make CMakeFiles/Tracking.dir/src/Tracking.cpp.i
-.PHONY : src/Tracking.cpp.i
-
-src/Tracking.s: src/Tracking.cpp.s
-
-.PHONY : src/Tracking.s
-
-# target to generate assembly for a file
-src/Tracking.cpp.s:
-	$(MAKE) -f CMakeFiles/Tracking.dir/build.make CMakeFiles/Tracking.dir/src/Tracking.cpp.s
-.PHONY : src/Tracking.cpp.s
-
 src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
@@ -277,9 +237,8 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
-	@echo "... rebuild_cache"
 	@echo "... Detections"
-	@echo "... Tracking"
+	@echo "... rebuild_cache"
 	@echo "... Graphics"
 	@echo "... main"
 	@echo "... src/Detections.o"
@@ -288,9 +247,6 @@ help:
 	@echo "... src/Graphics.o"
 	@echo "... src/Graphics.i"
 	@echo "... src/Graphics.s"
-	@echo "... src/Tracking.o"
-	@echo "... src/Tracking.i"
-	@echo "... src/Tracking.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

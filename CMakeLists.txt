@@ -15,7 +15,6 @@ include_directories(include ${OpenCV_INCLUDE_DIRS} )
 # ### opencv_handler ###
 ########################
 add_library( Detections src/Detections.cpp )
-add_library( Tracking src/Tracking.cpp )
 
 # ### opengl_handler ###
 ########################

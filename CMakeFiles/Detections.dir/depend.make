@@ -116,6 +116,12 @@ CMakeFiles/Detections.dir/src/Detections.cpp.o: /usr/local/include/opencv2/stitc
 CMakeFiles/Detections.dir/src/Detections.cpp.o: /usr/local/include/opencv2/stitching/warpers.hpp
 CMakeFiles/Detections.dir/src/Detections.cpp.o: /usr/local/include/opencv2/superres.hpp
 CMakeFiles/Detections.dir/src/Detections.cpp.o: /usr/local/include/opencv2/superres/optical_flow.hpp
+CMakeFiles/Detections.dir/src/Detections.cpp.o: /usr/local/include/opencv2/tracking.hpp
+CMakeFiles/Detections.dir/src/Detections.cpp.o: /usr/local/include/opencv2/tracking/feature.hpp
+CMakeFiles/Detections.dir/src/Detections.cpp.o: /usr/local/include/opencv2/tracking/onlineBoosting.hpp
+CMakeFiles/Detections.dir/src/Detections.cpp.o: /usr/local/include/opencv2/tracking/onlineMIL.hpp
+CMakeFiles/Detections.dir/src/Detections.cpp.o: /usr/local/include/opencv2/tracking/tldDataset.hpp
+CMakeFiles/Detections.dir/src/Detections.cpp.o: /usr/local/include/opencv2/tracking/tracker.hpp
 CMakeFiles/Detections.dir/src/Detections.cpp.o: /usr/local/include/opencv2/video.hpp
 CMakeFiles/Detections.dir/src/Detections.cpp.o: /usr/local/include/opencv2/video/background_segm.hpp
 CMakeFiles/Detections.dir/src/Detections.cpp.o: /usr/local/include/opencv2/video/tracking.hpp

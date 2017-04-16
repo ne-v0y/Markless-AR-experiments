@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Detections.cpp"
-#include "Tracking.cpp"
+
 
 using namespace std;
 using namespace opencv_handler;
@@ -27,16 +27,8 @@ int main(int argc, char** argv)
 
   /* create image processing instance*/
   Detections mydetector;
-  Tracking mytracker;
 
   mydetector.imgStreamIn(atoi(argv[1]));
-  if (mydetector.detected)
-  {
-    cout << "here" << endl;
-    mytracker.ROI = mydetector.bounding_box;
-    mytracker.frame = mydetector.result;
-    mytracker.Start();
-  }
 
 
 }
