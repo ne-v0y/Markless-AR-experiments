@@ -181,9 +181,7 @@ namespace opencv_handler
       if (Detections::detected)
       {
         Detections::tracking();
-      }
-      else
-      {
+
         /* find homograph based on the interest points*/
         // Mat H = findHomography( vertices, useful, CV_RANSAC, 5);
         // vector<Point2f> obj_corners(4);
@@ -217,7 +215,7 @@ namespace opencv_handler
         cameraMatrix.at<double>(0,2) = 311.4898582826918;
         cameraMatrix.at<double>(1,1) = 588.3201007355697;
         cameraMatrix.at<double>(1,2) = 249.379129698565;
-        cout << "Initial cameraMatrix: " << cameraMatrix << endl;
+        //cout << "Initial cameraMatrix: " << cameraMatrix << endl;
 
         Mat distCoeffs(5,1,DataType<double>::type);
         // using calibrated params: [-0.06095721652204921, -0.09321965925237759, 0.01404094207269403, 0.003574047262481977, 0]

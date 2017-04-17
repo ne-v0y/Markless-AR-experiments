@@ -23,7 +23,6 @@ namespace opencv_handler
   class Detections
   {
     private:
-      Mat img;
       Mat mask;
       Mat result;
       Rect2d bounding_box;
@@ -39,6 +38,8 @@ namespace opencv_handler
     public:
       Detections();
       ~Detections();
+
+      Mat img;
 
       bool using_img; // if only testing with an image, then not triggering tracking
       bool detected;
