@@ -252,6 +252,45 @@ namespace opencv_handler
         solvePnP(pts3d, useful, cameraMatrix, distCoeffs, rvec, tvec);
         cout << "rvec = " << rvec << endl;
         cout << "tvec = " << tvec << endl;
+
+        vector<Point3f> axis;
+        tmp.x = 0; tmp.y = 0; tmp.z =0;
+        axis.push_back(tmp);
+        tmp.x = 0; tmp.y = 2; tmp.z =0;
+        axis.push_back(tmp);
+        tmp.x = 2; tmp.y = 2; tmp.z =0;
+        axis.push_back(tmp);
+        tmp.x = 2; tmp.y = 0; tmp.z =0;
+        axis.push_back(tmp);
+        tmp.x = 0; tmp.y = 0; tmp.z =-2;
+        axis.push_back(tmp);
+        tmp.x = 0; tmp.y = 2; tmp.z =-2;
+        axis.push_back(tmp);
+        tmp.x = 2; tmp.y = 2; tmp.z =-2;
+        axis.push_back(tmp);
+        tmp.x = 2; tmp.y = 0; tmp.z =-2;
+        axis.push_back(tmp);
+        vector<Point2f> outputPoints;
+        projectPoints(axis, rvec, tvec, cameraMatrix, distCoeffs, outputPoints);
+        cout << outputPoints << endl;
+
+        vector<Point> bottom, top;
+        Point2f tmp1;
+        for (size_t t = 0; t < axis.size(); t +=2)
+        {
+          tmp1 = outputPoints[t];
+          bottom.push_back(tmp1);
+          tmp1 = outputPoints[t+1];
+          top.push_back(tmp1);
+        }
+        cout << bottom<< endl;
+        vector<vector<Point> > b_, t_;
+        b_.push_back(bottom);
+        t_.push_back(top);
+        drawContours(copy, b_,-1, Scalar(0,255,0), -3);
+        for (size_t t = 0; t < 4; t ++)
+          line( copy, bottom[t], top[t], Scalar(255, 0, 0), 3 );
+        drawContours(copy, t_,-1, Scalar(0,0, 255), 3);
       } /* end of tracking condition*/
 
 
@@ -265,6 +304,8 @@ namespace opencv_handler
     //imshow("mask", mask);
     imshow("blank", blank);
   }
+
+
 
   int Detections::tracking()
   {

@@ -24,3 +24,5 @@ add_library( Graphics src/Graphics.cpp )
 ##############
 add_executable( main src/main.cpp )
 target_link_libraries( main ${OpenCV_LIBS})
+
+#add_executable(mesh src/Graphics.cpp)

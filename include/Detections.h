@@ -52,6 +52,7 @@ namespace opencv_handler
       void houghLinePFinder();
       void findVanishing();
       void cornerFinder();
+      void draw_cube();
 
       int tracking();
   };

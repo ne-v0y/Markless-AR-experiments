@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ka/Desktop/414/Markless-AR-experiments/src/Graphics.cpp
+Graphics.h
+/home/ka/Desktop/414/Markless-AR-experiments/src/Graphics.h
+
+include/Graphics.h
+GL/glew.h
+-
+GL/freeglut.h
+-
+cmath
+-
+eigen/Eigen/Dense
+-
+iostream
+-
+fstream
+-
+sstream
+-
+string
+-
+cfloat
+-
+cmath
+-
+vector
+-
+eigen/Eigen/Dense
+-
+
