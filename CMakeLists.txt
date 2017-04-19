@@ -26,7 +26,7 @@ add_library( Graphics src/Graphics.cpp )
 # ### main ###
 ##############
 add_executable( main src/main.cpp )
-target_link_libraries( main ${OpenCV_LIBS} )
+target_link_libraries( main ${OpenCV_LIBS}  ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_LIBRARIES})
 
-add_executable(mesh src/Graphics.cpp)
-target_link_libraries(mesh  ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_LIBRARIES})
+#add_executable(mesh src/Graphics.cpp)
+#target_link_libraries(mesh  ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_LIBRARIES})

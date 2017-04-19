@@ -54,5 +54,4 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/Detections.dir/DependInfo.cmake"
   "CMakeFiles/Graphics.dir/DependInfo.cmake"
   "CMakeFiles/main.dir/DependInfo.cmake"
-  "CMakeFiles/mesh.dir/DependInfo.cmake"
   )

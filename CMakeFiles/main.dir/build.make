@@ -117,6 +117,12 @@ main: /usr/local/lib/libopencv_xfeatures2d.so.3.2.0
 main: /usr/local/lib/libopencv_ximgproc.so.3.2.0
 main: /usr/local/lib/libopencv_xobjdetect.so.3.2.0
 main: /usr/local/lib/libopencv_xphoto.so.3.2.0
+main: /usr/lib/x86_64-linux-gnu/libGLU.so
+main: /usr/lib/x86_64-linux-gnu/libGL.so
+main: /usr/lib/x86_64-linux-gnu/libglut.so
+main: /usr/lib/x86_64-linux-gnu/libXmu.so
+main: /usr/lib/x86_64-linux-gnu/libXi.so
+main: /usr/lib/x86_64-linux-gnu/libGLEW.so
 main: /usr/local/lib/libopencv_photo.so.3.2.0
 main: /usr/local/lib/libopencv_shape.so.3.2.0
 main: /usr/local/lib/libopencv_calib3d.so.3.2.0
