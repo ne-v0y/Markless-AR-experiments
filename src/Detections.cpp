@@ -65,7 +65,7 @@ namespace opencv_handler
     Mat copy = Detections::img;
     //cvtColor(copy, copy, CV_BGR2GRAY);
     blur(copy, copy, Size(3,3));
-    Canny(copy, Detections::mask, 50, 150, 3);
+    Canny(copy, Detections::mask, 100, 300, 3);
     vector<Vec4i> lines_pos;
     vector<Point2f> drawing_pts;
     HoughLinesP(mask, lines_pos, 1, CV_PI / 180, 100, 100, 30);
