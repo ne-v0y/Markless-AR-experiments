@@ -22,6 +22,10 @@ namespace opencv_handler
 
   class Detections
   {
+
+    Mat rvec = Mat(3,1, DataType<double>::type);
+    Mat tvec = Mat(3,1, DataType<double>::type);
+
     private:
       Mat mask;
       Mat result;
@@ -44,6 +48,8 @@ namespace opencv_handler
       bool using_img; // if only testing with an image, then not triggering tracking
       bool detected;
       int success_count;
+      //Point3f rvec;
+      //Point3f tvec;
 
       Ptr<Tracker> tracker;
 

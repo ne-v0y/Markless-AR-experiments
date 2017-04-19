@@ -41,6 +41,71 @@ static int objID = 1; // Object ID.
 static float Xangle = 0.0, Yangle = 0.0, Zangle = 0.0; // Angles to rotate objects.
 static char *objName; // Pointer to object name.
 
+/* create image processing instance*/
+Detections mydetector;
+
+// reference: https://r3dux.org/2012/01/how-to-convert-an-opencv-cvmat-to-an-opengl-texture/
+// Function turn a cv::Mat into a texture, and return the texture ID as a GLuint for use
+GLuint matToTexture(cv::Mat &mat, GLenum minFilter, GLenum magFilter, GLenum wrapFilter)
+{
+	// Generate a number for our textureID's unique handle
+	GLuint textureID;
+	glGenTextures(1, &textureID);
+
+	// Bind to our texture handle
+	glBindTexture(GL_TEXTURE_2D, textureID);
+
+	// Catch silly-mistake texture interpolation method for magnification
+	if (magFilter == GL_LINEAR_MIPMAP_LINEAR  ||
+	    magFilter == GL_LINEAR_MIPMAP_NEAREST ||
+	    magFilter == GL_NEAREST_MIPMAP_LINEAR ||
+	    magFilter == GL_NEAREST_MIPMAP_NEAREST)
+	{
+		cout << "You can't use MIPMAPs for magnification - setting filter to GL_LINEAR" << endl;
+		magFilter = GL_LINEAR;
+	}
+
+	// Set texture interpolation methods for minification and magnification
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
+
+	// Set texture clamping method
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapFilter);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapFilter);
+
+	// Set incoming texture format to:
+	// GL_BGR       for CV_CAP_OPENNI_BGR_IMAGE,
+	// GL_LUMINANCE for CV_CAP_OPENNI_DISPARITY_MAP,
+	// Work out other mappings as required ( there's a list in comments in main() )
+	GLenum inputColourFormat = GL_BGR;
+	if (mat.channels() == 1)
+	{
+		inputColourFormat = GL_LUMINANCE;
+	}
+
+	// Create the texture
+	glTexImage2D(GL_TEXTURE_2D,     // Type of texture
+	             0,                 // Pyramid level (for mip-mapping) - 0 is the top level
+	             GL_RGB,            // Internal colour format to convert to
+	             mat.cols,          // Image width  i.e. 640 for Kinect in standard mode
+	             mat.rows,          // Image height i.e. 480 for Kinect in standard mode
+	             0,                 // Border width in pixels (can either be 1 or 0)
+	             inputColourFormat, // Input image format (i.e. GL_RGB, GL_RGBA, GL_BGR etc.)
+	             GL_UNSIGNED_BYTE,  // Image data type
+	             mat.ptr());        // The actual image data itself
+
+	// If we're using mipmaps then generate them. Note: This requires OpenGL 3.0 or higher
+	if (minFilter == GL_LINEAR_MIPMAP_LINEAR  ||
+	    minFilter == GL_LINEAR_MIPMAP_NEAREST ||
+	    minFilter == GL_NEAREST_MIPMAP_LINEAR ||
+	    minFilter == GL_NEAREST_MIPMAP_NEAREST)
+	{
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+
+	return textureID;
+}
+
 // Routine to draw a stroke character string.
 void writeStrokeString(void *font, char *string)
 {
@@ -85,91 +150,89 @@ void drawScene()
 		 objName = "Solid Sphere";
          break;
       case 2:
-         glutWireSphere(5.0, 40, 40);
-		 objName = "Wire Sphere";
-         break;
-      case 3:
          glutSolidCube(7.0);
 		 objName = "Solid Cube";
          break;
-      case 4:
-         glutWireCube(7.0);
-		 objName = "Wire Cube";
-         break;
-      case 5:
+      case 3:
          glutSolidCone(3.0, 8.0, 30, 30);
 		 objName = "Solid Cone";
          break;
-      case 6:
-         glutWireCone(3.0, 8.0, 30, 30);
-		 objName = "Wire Cone";
-         break;
-      case 7:
+      case 4:
          glutSolidTorus(1.0, 4.0, 30, 30);
 		 objName = "Solid Torus";
          break;
-      case 8:
-         glutWireTorus(1.0, 4.0, 30, 30);
-		 objName = "Wire Torus";
-         break;
-      case 9:
+      case 5:
 		 glScalef(3.0, 3.0, 3.0);
          glutSolidDodecahedron();
 		 objName = "Solid Dodecahedron";
          break;
-      case 10:
-		 glScalef(3.0, 3.0, 3.0);
-         glutWireDodecahedron();
-		 objName = "Wire Dodecahedron";
-         break;
-      case 11:
+      case 6:
 		 glScalef(5.0, 5.0, 5.0);
          glutSolidOctahedron();
 		 objName = "Solid Octahecron";
          break;
-      case 12:
-		 glScalef(5.0, 5.0, 5.0);
-         glutWireOctahedron();
-		 objName = "Wire Octahedron";
-         break;
-      case 13:
+      case 7:
 		 glScalef(6.0, 6.0, 6.0);
          glutSolidTetrahedron();
 		 objName = "Solid Tetrahedron";
          break;
-      case 14:
-		 glScalef(6.0, 6.0, 6.0);
-         glutWireTetrahedron();
-		 objName = "Wire Tetrahedron";
-         break;
-      case 15:
+      case 8:
 		 glScalef(5.0, 5.0, 5.0);
          glutSolidIcosahedron();
 		 objName = "Solid Icosahedron";
          break;
-      case 16:
-		 glScalef(5.0, 5.0, 5.0);
-         glutWireIcosahedron();
-		 objName = "Wire Icosahedron";
-         break;
-      case 17:
+      case 9:
          glutSolidTeapot(4.0);
 		 objName = "Solid Teapot";
-         break;
-      case 18:
-         glutWireTeapot(4.0);
-		 objName = "Wire Teapot";
          break;
       default:
 		 break;
    }
    glPopMatrix();
 
-   // Write label after disabling lighting.
-   glDisable(GL_LIGHTING);
-   glColor3f(0.0, 0.0, 0.0);
-   writeObjectName();
-   glEnable(GL_LIGHTING);
+  //  // Write label after disabling lighting.
+  //  glDisable(GL_LIGHTING);
+  //  glColor3f(0.0, 0.0, 0.0);
+  //  writeObjectName();
+  //  glEnable(GL_LIGHTING);
+
+
+   // enabling background image capture
+  glEnable(GL_TEXTURE_2D);
+  float w = 6.4f;
+  float h = 4.8f;
+  GLuint imageTex = matToTexture(mydetector.img, GL_LINEAR_MIPMAP_LINEAR,   GL_LINEAR, GL_CLAMP);
+  GLuint depthTex = matToTexture(mydetector.img, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_CLAMP);
+
+  // Front facing texture
+ glBindTexture(GL_TEXTURE_2D, imageTex);
+ glBegin(GL_QUADS);
+  glTexCoord2f(1, 1);
+  glVertex2f(-w/2,  -h/2);
+  glTexCoord2f(1, 0);
+  glVertex2f(-w/2, h/2);
+  glTexCoord2f(0, 0);
+  glVertex2f(w/2, h/2);
+  glTexCoord2f(0, 1);
+  glVertex2f(w/2,-h/2);
+ glEnd();
+
+ // // Back facing texture (facing backward because of the reversed the vertex winding)
+ // glBindTexture(GL_TEXTURE_2D, depthTex);
+ // glBegin(GL_QUADS);
+ //   glTexCoord2f(1, 1);
+ //   glVertex2f(w/2,  h/2);
+ //   glTexCoord2f(1, 0);
+ //   glVertex2f(-w/2, h/2);
+ //   glTexCoord2f(0, 0);
+ //   glVertex2f(-w/2, -h/2);
+ //   glTexCoord2f(0, 1);
+ //   glVertex2f( w/2,  -h/2);
+ // glEnd();
+
+   glDeleteTextures(1, &imageTex);
+   glDeleteTextures(1, &depthTex);
+   glDisable(GL_TEXTURE_2D);
 
    glutSwapBuffers();
 }
@@ -177,38 +240,38 @@ void drawScene()
 // Initialization routine.
 void setup(void)
 {
-   // Material property vectors.
-   float matSpec[] = { 0.0, 1.0, 1.0, 1.0 };
-   float matShine[] = { 50.0 };
-   float matAmbAndDif[] = {0.0, 0.1, 1.0, 1.0};
-
-   // Light property vectors.
-   float lightAmb[] = { 0.0, 0.1, 1.0, 1.0 };
-   float lightDifAndSpec[] = { 0.0, 0.1, 1.0, 1.0 };
-   float lightPos[] = { 0.0, 7.0, 3.0, 0.0 };
-   float globAmb[] = { 0.2, 0.2, 0.2, 1.0 };
-
-   // Material properties of the objects.
-   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, matSpec);
-   glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, matShine);
-   glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, matAmbAndDif);
-
-   // Light0 properties.
-   glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmb);
-   glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDifAndSpec);
-   glLightfv(GL_LIGHT0, GL_SPECULAR, lightDifAndSpec);
-   glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
-
-   // Poperties of the ambient light.
-   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globAmb); // Global ambient light.
-
-   glEnable(GL_LIGHTING); // Enable lighting calculations.
-   glEnable(GL_LIGHT0); // Enable particular light source.
+  //  // Material property vectors.
+  //  float matSpec[] = { 0.0, 1.0, 1.0, 1.0 };
+  //  float matShine[] = { 50.0 };
+  //  float matAmbAndDif[] = {0.0, 0.1, 1.0, 1.0};
+   //
+  //  // Light property vectors.
+  //  float lightAmb[] = { 0.0, 0.1, 1.0, 1.0 };
+  //  float lightDifAndSpec[] = { 0.0, 0.1, 1.0, 1.0 };
+  //  float lightPos[] = { 0.0, 7.0, 3.0, 0.0 };
+  //  float globAmb[] = { 0.2, 0.2, 0.2, 1.0 };
+   //
+  //  // Material properties of the objects.
+  //  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, matSpec);
+  //  glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, matShine);
+  //  glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, matAmbAndDif);
+   //
+  //  // Light0 properties.
+  //  glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmb);
+  //  glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDifAndSpec);
+  //  glLightfv(GL_LIGHT0, GL_SPECULAR, lightDifAndSpec);
+  //  glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+   //
+  //  // Poperties of the ambient light.
+  //  glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globAmb); // Global ambient light.
+   //
+  //  glEnable(GL_LIGHTING); // Enable lighting calculations.
+  //  glEnable(GL_LIGHT0); // Enable particular light source.
    glEnable(GL_DEPTH_TEST); // Enable depth testing.
 
    glEnable(GL_NORMALIZE); // Enable automatic normalization of normals.
 
-   glClearColor(1.0, 1.0, 1.0, 0.0);
+   glClearColor(1.0, 1.0, 1.0, 1.0);
 }
 
 // OpenGL window reshape routine.
@@ -270,21 +333,21 @@ void specialKeyInput(int key, int x, int y)
    if(key == GLUT_KEY_DOWN)
    {
       if (objID > 1) objID--;
-      else objID = 18;
+      else objID = 9;
    }
    if(key == GLUT_KEY_LEFT)
    {
       if (objID > 1) objID--;
-      else objID = 18;
+      else objID = 9;
    }
    if(key == GLUT_KEY_UP)
    {
-      if (objID < 18) objID++;
+      if (objID < 9) objID++;
       else objID = 1;
    }
    if(key == GLUT_KEY_RIGHT)
    {
-      if (objID < 18) objID++;
+      if (objID < 9) objID++;
       else objID = 1;
    }
 
@@ -304,37 +367,39 @@ void printInteraction(void)
 // Main routine.
 int main(int argc, char **argv)
 {
-   printInteraction();
-   glutInit(&argc, argv);
 
-   glutInitContextVersion(2, 1);
-   glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
+  if (argc != 2)
+  {
+    cout << "Usage: node <video input>" << endl;
+    return -1;
+  }
 
-   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-   glutInitWindowSize(500, 500);
-   glutInitWindowPosition(100, 100);
-   glutCreateWindow("glutObjects.cpp");
-   glutDisplayFunc(drawScene);
-   glutReshapeFunc(resize);
-   glutKeyboardFunc(keyInput);
-   glutSpecialFunc(specialKeyInput);
 
-   glewExperimental = GL_TRUE;
-   glewInit();
+  mydetector.imgStreamIn(atoi(argv[1]));
+  if (mydetector.detected)
+  {
+    printInteraction();
+    glutInit(&argc, argv);
 
-   setup();
+    glutInitContextVersion(2, 1);
+    glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
 
-   glutMainLoop();
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+    glutInitWindowSize(640, 480);
+    glutInitWindowPosition(100, 100);
+    glutCreateWindow("glutObjects.cpp");
+    glutDisplayFunc(drawScene);
+    glutReshapeFunc(resize);
+    glutKeyboardFunc(keyInput);
+    glutSpecialFunc(specialKeyInput);
 
-   if (argc != 2)
-   {
-     cout << "Usage: node <video input>" << endl;
-     return -1;
-   }
+    glewExperimental = GL_TRUE;
+    glewInit();
 
-   /* create image processing instance*/
-   Detections mydetector;
+    setup();
 
-   mydetector.imgStreamIn(atoi(argv[1]));
+    glutMainLoop();
+  }
+
 
 }

@@ -64,7 +64,7 @@ namespace opencv_handler
   {
     Mat copy = Detections::img;
     //cvtColor(copy, copy, CV_BGR2GRAY);
-    blur(copy, copy, Size(4,4));
+    blur(copy, copy, Size(3,3));
     Canny(copy, Detections::mask, 10, 300, 3);
     vector<Vec4i> lines_pos;
     vector<Point2f> drawing_pts;
@@ -78,12 +78,13 @@ namespace opencv_handler
       Point2f pt1, pt2;
       pt1.x = lines_pos[i][0]; pt1.y = lines_pos[i][1];
       pt2.x = lines_pos[i][2]; pt2.y = lines_pos[i][3];
-      line( blank, pt1, pt2, Scalar(255,255,255), 1, CV_AA);
+
       d = pt1 - pt2;
       if (sqrt(d.x*d.x + d.y*d.y) > 100)
       {
         drawing_pts.push_back(pt1);
         drawing_pts.push_back(pt2);
+        line( blank, pt1, pt2, Scalar(255,255,255), 1, CV_AA);
       }
     }
 
@@ -107,13 +108,15 @@ namespace opencv_handler
     for (size_t t = 0; t < line_intersc.size(); t ++)
       circle(copy, line_intersc[t], 4, Scalar(0,0,255), -1, 8, 0);
 
+
+    Rect2d bounding;
     //RotatedRect bounding = minAreaRect(line_intersc);
     vector<Point2f> vertices, useful;
     if ( line_intersc.size() < 4)
       cout << "Not enough line intersections detected" << endl;
     else
     {
-      Rect2d bounding = boundingRect(line_intersc);
+      bounding = boundingRect(line_intersc);
 
       /* passing the bounding box to ROI*/
       /* TODO: add a good filtering and recovery scheme*/
@@ -129,7 +132,7 @@ namespace opencv_handler
       Point2f d;
       for (int i = 0; i < 4; i++)
       {
-        line(copy, vertices[i], vertices[(i+1)%4], Scalar(0,100,0),2);
+        //line(copy, vertices[i], vertices[(i+1)%4], Scalar(0,100,0),2);
         d = vertices[i] - vertices[(i+1)%4];
         if (sqrt(d.x*d.x + d.y*d.y) < diff_)
           diff_ = sqrt(d.x*d.x + d.y*d.y);
@@ -180,6 +183,7 @@ namespace opencv_handler
 
       if (Detections::detected)
       {
+        Detections::bounding_box = bounding;
         Detections::tracking();
 
         /* find homograph based on the interest points*/
@@ -225,8 +229,6 @@ namespace opencv_handler
         distCoeffs.at<double>(3) = 0.003574047262481977;
         distCoeffs.at<double>(4) = 0;
 
-        Mat rvec(3,1, DataType<double>::type);
-        Mat tvec(3,1, DataType<double>::type);
 
         vector<Point3f> pts3d;
         Point3f tmp;
@@ -249,48 +251,48 @@ namespace opencv_handler
         tmp.z = 0;
         pts3d.push_back(tmp);
         //solvePnPRansac(pts3d, scene_corners, cameraMatrix, distCoeffs, rvec, tvec);
-        solvePnP(pts3d, useful, cameraMatrix, distCoeffs, rvec, tvec);
-        cout << "rvec = " << rvec << endl;
-        cout << "tvec = " << tvec << endl;
+        solvePnP(pts3d, useful, cameraMatrix, distCoeffs, Detections::rvec, Detections::tvec);
+        cout << "rvec = " << Detections::rvec << endl;
+        cout << "tvec = " << Detections::tvec << endl;
 
 
-        vector<Point3f> axis;
-        tmp.x = 0; tmp.y = 0; tmp.z =0;
-        axis.push_back(tmp);
-        tmp.x = 0; tmp.y = 2; tmp.z =0;
-        axis.push_back(tmp);
-        tmp.x = 2; tmp.y = 2; tmp.z =0;
-        axis.push_back(tmp);
-        tmp.x = 2; tmp.y = 0; tmp.z =0;
-        axis.push_back(tmp);
-        tmp.x = 0; tmp.y = 0; tmp.z =-2;
-        axis.push_back(tmp);
-        tmp.x = 0; tmp.y = 2; tmp.z =-2;
-        axis.push_back(tmp);
-        tmp.x = 2; tmp.y = 2; tmp.z =-2;
-        axis.push_back(tmp);
-        tmp.x = 2; tmp.y = 0; tmp.z =-2;
-        axis.push_back(tmp);
-        vector<Point2f> outputPoints;
-        projectPoints(axis, rvec, tvec, cameraMatrix, distCoeffs, outputPoints);
-        cout << outputPoints << endl;
-
-        vector<Point> bottom, top;
-        Point2f tmp1;
-        for (size_t t = 0; t < axis.size(); t +=2)
-        {
-          tmp1 = outputPoints[t];
-          bottom.push_back(tmp1);
-          tmp1 = outputPoints[t+1];
-          top.push_back(tmp1);
-        }
-        vector<vector<Point> > b_, t_;
-        b_.push_back(bottom);
-        t_.push_back(top);
-        drawContours(copy, b_,-1, Scalar(0,255,0), -3);
-        for (size_t t = 0; t < 4; t ++)
-          line( copy, bottom[t], top[t], Scalar(255, 0, 0), 3 );
-        drawContours(copy, t_,-1, Scalar(0,0, 255), 3);
+      //   vector<Point3f> axis;
+      //   tmp.x = 0; tmp.y = 0; tmp.z =0;
+      //   axis.push_back(tmp);
+      //   tmp.x = 0; tmp.y = 3; tmp.z =0;
+      //   axis.push_back(tmp);
+      //   tmp.x = 3; tmp.y = 3; tmp.z =0;
+      //   axis.push_back(tmp);
+      //   tmp.x = 3; tmp.y = 0; tmp.z =0;
+      //   axis.push_back(tmp);
+      //   tmp.x = 0; tmp.y = 0; tmp.z =-3;
+      //   axis.push_back(tmp);
+      //   tmp.x = 0; tmp.y = 3; tmp.z =-3;
+      //   axis.push_back(tmp);
+      //   tmp.x = 3; tmp.y = 3; tmp.z =-3;
+      //   axis.push_back(tmp);
+      //   tmp.x = 3; tmp.y = 0; tmp.z =-3;
+      //   axis.push_back(tmp);
+      //   vector<Point2f> outputPoints;
+      //   projectPoints(axis, Detections::rvec, Detections::tvec, cameraMatrix, distCoeffs, outputPoints);
+      //   cout << outputPoints << endl;
+      //
+      //   vector<Point> bottom, top;
+      //   Point2f tmp1;
+      //   for (size_t t = 0; t < axis.size(); t +=2)
+      //   {
+      //     tmp1 = outputPoints[t];
+      //     bottom.push_back(tmp1);
+      //     tmp1 = outputPoints[t+1];
+      //     top.push_back(tmp1);
+      //   }
+      //   vector<vector<Point> > b_, t_;
+      //   b_.push_back(bottom);
+      //   t_.push_back(top);
+      //   drawContours(copy, b_, -1, Scalar(0,255,0), -3);
+      //   for (size_t t = 0; t < 4; t ++)
+      //     line( copy, bottom[t], top[t], Scalar(255, 0, 0), 3 );
+      //   drawContours(copy, t_,-1, Scalar(0,0, 255), 3);
       } /* end of tracking condition*/
 
 
