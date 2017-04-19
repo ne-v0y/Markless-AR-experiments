@@ -56,17 +56,6 @@ CMAKE_BINARY_DIR = /home/ka/Desktop/414/Markless-AR-experiments
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/usr/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -77,6 +66,17 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
+	/usr/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -149,6 +149,19 @@ main/fast:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
+#=============================================================================
+# Target rules for targets named mesh
+
+# Build rule for target.
+mesh: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 mesh
+.PHONY : mesh
+
+# fast build rule for target.
+mesh/fast:
+	$(MAKE) -f CMakeFiles/mesh.dir/build.make CMakeFiles/mesh.dir/build
+.PHONY : mesh/fast
+
 src/Detections.o: src/Detections.cpp.o
 
 .PHONY : src/Detections.o
@@ -183,6 +196,7 @@ src/Graphics.o: src/Graphics.cpp.o
 # target to build an object file
 src/Graphics.cpp.o:
 	$(MAKE) -f CMakeFiles/Graphics.dir/build.make CMakeFiles/Graphics.dir/src/Graphics.cpp.o
+	$(MAKE) -f CMakeFiles/mesh.dir/build.make CMakeFiles/mesh.dir/src/Graphics.cpp.o
 .PHONY : src/Graphics.cpp.o
 
 src/Graphics.i: src/Graphics.cpp.i
@@ -192,6 +206,7 @@ src/Graphics.i: src/Graphics.cpp.i
 # target to preprocess a source file
 src/Graphics.cpp.i:
 	$(MAKE) -f CMakeFiles/Graphics.dir/build.make CMakeFiles/Graphics.dir/src/Graphics.cpp.i
+	$(MAKE) -f CMakeFiles/mesh.dir/build.make CMakeFiles/mesh.dir/src/Graphics.cpp.i
 .PHONY : src/Graphics.cpp.i
 
 src/Graphics.s: src/Graphics.cpp.s
@@ -201,6 +216,7 @@ src/Graphics.s: src/Graphics.cpp.s
 # target to generate assembly for a file
 src/Graphics.cpp.s:
 	$(MAKE) -f CMakeFiles/Graphics.dir/build.make CMakeFiles/Graphics.dir/src/Graphics.cpp.s
+	$(MAKE) -f CMakeFiles/mesh.dir/build.make CMakeFiles/mesh.dir/src/Graphics.cpp.s
 .PHONY : src/Graphics.cpp.s
 
 src/main.o: src/main.cpp.o
@@ -236,11 +252,12 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... edit_cache"
-	@echo "... Detections"
 	@echo "... rebuild_cache"
+	@echo "... Detections"
 	@echo "... Graphics"
 	@echo "... main"
+	@echo "... edit_cache"
+	@echo "... mesh"
 	@echo "... src/Detections.o"
 	@echo "... src/Detections.i"
 	@echo "... src/Detections.s"

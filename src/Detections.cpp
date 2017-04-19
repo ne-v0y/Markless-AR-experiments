@@ -253,6 +253,7 @@ namespace opencv_handler
         cout << "rvec = " << rvec << endl;
         cout << "tvec = " << tvec << endl;
 
+
         vector<Point3f> axis;
         tmp.x = 0; tmp.y = 0; tmp.z =0;
         axis.push_back(tmp);
@@ -283,7 +284,6 @@ namespace opencv_handler
           tmp1 = outputPoints[t+1];
           top.push_back(tmp1);
         }
-        cout << bottom<< endl;
         vector<vector<Point> > b_, t_;
         b_.push_back(bottom);
         t_.push_back(top);

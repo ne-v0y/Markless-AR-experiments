@@ -6,11 +6,14 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 # ### Build ###
 ###############
 # default using 3.2.0
-#SET(OpenCV_INCLUDE_DIRS "/usr/local/include/opencv;/usr/local/include/opencv2")
-#SET(OpenCV_LIB_DIR "/usr/local/lib")
-find_package( OpenCV REQUIRED)
+find_package(OpenCV REQUIRED)
+find_package(OpenGL REQUIRED)
+find_package(GLUT REQUIRED)
+find_package(GLEW REQUIRED)
 
 include_directories(include ${OpenCV_INCLUDE_DIRS} )
+include_directories(include ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} )
+include_directories(include ${GLEW_INCLUDE_DIRS})
 
 # ### opencv_handler ###
 ########################
@@ -23,6 +26,7 @@ add_library( Graphics src/Graphics.cpp )
 # ### main ###
 ##############
 add_executable( main src/main.cpp )
-target_link_libraries( main ${OpenCV_LIBS})
+target_link_libraries( main ${OpenCV_LIBS} )
 
-#add_executable(mesh src/Graphics.cpp)
+add_executable(mesh src/Graphics.cpp)
+target_link_libraries(mesh  ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_LIBRARIES})

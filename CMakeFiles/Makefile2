@@ -171,6 +171,43 @@ clean: CMakeFiles/main.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/mesh.dir
+
+# All Build rule for target.
+CMakeFiles/mesh.dir/all:
+	$(MAKE) -f CMakeFiles/mesh.dir/build.make CMakeFiles/mesh.dir/depend
+	$(MAKE) -f CMakeFiles/mesh.dir/build.make CMakeFiles/mesh.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles --progress-num=7,8 "Built target mesh"
+.PHONY : CMakeFiles/mesh.dir/all
+
+# Include target in all.
+all: CMakeFiles/mesh.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/mesh.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/mesh.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles 0
+.PHONY : CMakeFiles/mesh.dir/rule
+
+# Convenience name for target.
+mesh: CMakeFiles/mesh.dir/rule
+
+.PHONY : mesh
+
+# clean rule for target.
+CMakeFiles/mesh.dir/clean:
+	$(MAKE) -f CMakeFiles/mesh.dir/build.make CMakeFiles/mesh.dir/clean
+.PHONY : CMakeFiles/mesh.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/mesh.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
 # Special targets to cleanup operation of make.
 
 # Special rule to run CMake to check the build system integrity.

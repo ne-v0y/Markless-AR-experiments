@@ -90,6 +90,12 @@ mesh_EXTERNAL_OBJECTS =
 
 mesh: CMakeFiles/mesh.dir/src/Graphics.cpp.o
 mesh: CMakeFiles/mesh.dir/build.make
+mesh: /usr/lib/x86_64-linux-gnu/libGLU.so
+mesh: /usr/lib/x86_64-linux-gnu/libGL.so
+mesh: /usr/lib/x86_64-linux-gnu/libglut.so
+mesh: /usr/lib/x86_64-linux-gnu/libXmu.so
+mesh: /usr/lib/x86_64-linux-gnu/libXi.so
+mesh: /usr/lib/x86_64-linux-gnu/libGLEW.so
 mesh: CMakeFiles/mesh.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ka/Desktop/414/Markless-AR-experiments/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable mesh"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/mesh.dir/link.txt --verbose=$(VERBOSE)
