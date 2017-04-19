@@ -1,2 +1,0 @@
-/usr/bin/ar qc libTracking.a  CMakeFiles/Tracking.dir/src/Tracking.cpp.o
-/usr/bin/ranlib libTracking.a

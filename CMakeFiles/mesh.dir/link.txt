@@ -1,1 +1,0 @@
-/usr/bin/c++    -std=c++11    CMakeFiles/mesh.dir/src/Graphics.cpp.o  -o mesh -rdynamic -lGLU -lGL -lglut -lXmu -lXi -lGLEW 
