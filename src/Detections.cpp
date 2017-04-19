@@ -65,10 +65,10 @@ namespace opencv_handler
     Mat copy = Detections::img;
     //cvtColor(copy, copy, CV_BGR2GRAY);
     blur(copy, copy, Size(3,3));
-    Canny(copy, Detections::mask, 10, 300, 3);
+    Canny(copy, Detections::mask, 50, 150, 3);
     vector<Vec4i> lines_pos;
     vector<Point2f> drawing_pts;
-    HoughLinesP(mask, lines_pos, 1, CV_PI / 180, 60, 30, 10 );
+    HoughLinesP(mask, lines_pos, 1, CV_PI / 180, 100, 100, 30);
     //cout << "Length of the points = " << lines_pos.size() << endl;
     Mat blank(480, 640, CV_8UC1, Scalar(0,0,0));
     Point2f d;
@@ -105,8 +105,8 @@ namespace opencv_handler
     }
 
 
-    for (size_t t = 0; t < line_intersc.size(); t ++)
-      circle(copy, line_intersc[t], 4, Scalar(0,0,255), -1, 8, 0);
+    // for (size_t t = 0; t < line_intersc.size(); t ++)
+    //   circle(copy, line_intersc[t], 4, Scalar(0,0,255), -1, 8, 0);
 
 
     Rect2d bounding;
@@ -179,7 +179,9 @@ namespace opencv_handler
     //rectangle(copy, bounding, Scalar(200,200,0), 2, 8, 0 );
     if( vertices.size() >= 4 and useful.size() >= 4)
     {
-      Detections::detected = true;
+      Detections::success_count += 1;
+      if(Detections::success_count == 5)
+        Detections::detected = true;
 
       if (Detections::detected)
       {
@@ -256,49 +258,66 @@ namespace opencv_handler
         cout << "tvec = " << Detections::tvec << endl;
 
 
-      //   vector<Point3f> axis;
-      //   tmp.x = 0; tmp.y = 0; tmp.z =0;
-      //   axis.push_back(tmp);
-      //   tmp.x = 0; tmp.y = 3; tmp.z =0;
-      //   axis.push_back(tmp);
-      //   tmp.x = 3; tmp.y = 3; tmp.z =0;
-      //   axis.push_back(tmp);
-      //   tmp.x = 3; tmp.y = 0; tmp.z =0;
-      //   axis.push_back(tmp);
-      //   tmp.x = 0; tmp.y = 0; tmp.z =-3;
-      //   axis.push_back(tmp);
-      //   tmp.x = 0; tmp.y = 3; tmp.z =-3;
-      //   axis.push_back(tmp);
-      //   tmp.x = 3; tmp.y = 3; tmp.z =-3;
-      //   axis.push_back(tmp);
-      //   tmp.x = 3; tmp.y = 0; tmp.z =-3;
-      //   axis.push_back(tmp);
-      //   vector<Point2f> outputPoints;
-      //   projectPoints(axis, Detections::rvec, Detections::tvec, cameraMatrix, distCoeffs, outputPoints);
-      //   cout << outputPoints << endl;
-      //
-      //   vector<Point> bottom, top;
-      //   Point2f tmp1;
-      //   for (size_t t = 0; t < axis.size(); t +=2)
-      //   {
-      //     tmp1 = outputPoints[t];
-      //     bottom.push_back(tmp1);
-      //     tmp1 = outputPoints[t+1];
-      //     top.push_back(tmp1);
-      //   }
-      //   vector<vector<Point> > b_, t_;
-      //   b_.push_back(bottom);
-      //   t_.push_back(top);
-      //   drawContours(copy, b_, -1, Scalar(0,255,0), -3);
-      //   for (size_t t = 0; t < 4; t ++)
-      //     line( copy, bottom[t], top[t], Scalar(255, 0, 0), 3 );
-      //   drawContours(copy, t_,-1, Scalar(0,0, 255), 3);
+        vector<Point3f> axis;
+        tmp.x = 0; tmp.y = 0; tmp.z =0;
+        axis.push_back(tmp);
+        tmp.x = 0; tmp.y = 50; tmp.z =0;
+        axis.push_back(tmp);
+        tmp.x = 50; tmp.y = 50; tmp.z =0;
+        axis.push_back(tmp);
+        tmp.x = 50; tmp.y = 0; tmp.z =0;
+        axis.push_back(tmp);
+        tmp.x = 0; tmp.y = 0; tmp.z =-50;
+        axis.push_back(tmp);
+        tmp.x = 0; tmp.y = 50; tmp.z =-50;
+        axis.push_back(tmp);
+        tmp.x = 50; tmp.y = 50; tmp.z =-50;
+        axis.push_back(tmp);
+        tmp.x = 50; tmp.y = 0; tmp.z =-50;
+        axis.push_back(tmp);
+        vector<Point2f> outputPoints;
+        projectPoints(axis, Detections::rvec, Detections::tvec, cameraMatrix, distCoeffs, outputPoints);
+        cout << outputPoints << endl;
+
+        bool to_draw = true;
+        vector<Point> bottom, top;
+        Point2f tmp1;
+        for (size_t t = 0; t < axis.size() / 2; t ++)
+        {
+          tmp1 = outputPoints[t];
+          if (tmp1.x < 0 or tmp1.x > 640 )
+            to_draw = false;
+          if (tmp1.y < 0 or tmp1.y > 480 )
+            to_draw = false;
+          bottom.push_back(tmp1);
+          tmp1 = outputPoints[t+4];
+          if (tmp1.x < 0 or tmp1.x > 640 )
+            to_draw = false;
+          if (tmp1.y < 0 or tmp1.y > 480 )
+            to_draw = false;
+          top.push_back(tmp1);
+        }
+        vector<vector<Point> > b_, t_;
+        b_.push_back(bottom);
+        t_.push_back(top);
+        if (to_draw)
+        {
+          drawContours(copy, b_, -1, Scalar(0,255,0), -3);
+          for (size_t t = 0; t < 4; t ++)
+            line( copy, bottom[t], top[t], Scalar(255, 0, 0), 3 );
+          drawContours(copy, t_,-1, Scalar(0,0, 255), 3);
+        }
+
       } /* end of tracking condition*/
 
 
     }
     else
+    {
       cout << "Not enough useful feature points" << endl;
+      Detections::success_count = 0;
+    }
+
     Detections::result = copy;
 
     namedWindow("result", WINDOW_AUTOSIZE);

@@ -43,6 +43,7 @@ static char *objName; // Pointer to object name.
 
 /* create image processing instance*/
 Detections mydetector;
+Mat global_frame;
 
 // reference: https://r3dux.org/2012/01/how-to-convert-an-opencv-cvmat-to-an-opengl-texture/
 // Function turn a cv::Mat into a texture, and return the texture ID as a GLuint for use
@@ -132,7 +133,7 @@ void drawScene()
    glLoadIdentity();
 
    // Position the objects for viewing.
-   gluLookAt(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+   gluLookAt(0.0, 0.0, 12.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
    glLineWidth(2.0); // Thicken the wireframes.
 
@@ -199,10 +200,9 @@ void drawScene()
 
    // enabling background image capture
   glEnable(GL_TEXTURE_2D);
-  float w = 6.4f;
-  float h = 4.8f;
-  GLuint imageTex = matToTexture(mydetector.img, GL_LINEAR_MIPMAP_LINEAR,   GL_LINEAR, GL_CLAMP);
-  GLuint depthTex = matToTexture(mydetector.img, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_CLAMP);
+  float w = 6.4f *2;
+  float h = 4.8f *2;
+  GLuint imageTex = matToTexture(global_frame, GL_LINEAR_MIPMAP_LINEAR,   GL_LINEAR, GL_CLAMP);
 
   // Front facing texture
  glBindTexture(GL_TEXTURE_2D, imageTex);
@@ -217,21 +217,7 @@ void drawScene()
   glVertex2f(w,-h);
  glEnd();
 
- // // Back facing texture (facing backward because of the reversed the vertex winding)
- // glBindTexture(GL_TEXTURE_2D, depthTex);
- // glBegin(GL_QUADS);
- //   glTexCoord2f(1, 1);
- //   glVertex2f(w/2,  h/2);
- //   glTexCoord2f(1, 0);
- //   glVertex2f(-w/2, h/2);
- //   glTexCoord2f(0, 0);
- //   glVertex2f(-w/2, -h/2);
- //   glTexCoord2f(0, 1);
- //   glVertex2f( w/2,  -h/2);
- // glEnd();
-
    glDeleteTextures(1, &imageTex);
-   glDeleteTextures(1, &depthTex);
    glDisable(GL_TEXTURE_2D);
 
    glutSwapBuffers();
@@ -378,6 +364,7 @@ int main(int argc, char **argv)
   mydetector.imgStreamIn(atoi(argv[1]));
   if (mydetector.detected)
   {
+
     printInteraction();
     glutInit(&argc, argv);
 
@@ -399,6 +386,9 @@ int main(int argc, char **argv)
     setup();
 
     glutMainLoop();
+
+
+
   }
 
 
