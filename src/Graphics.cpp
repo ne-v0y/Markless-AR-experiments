@@ -295,7 +295,7 @@ int main(int argc, char **argv)
    printInteraction();
    glutInit(&argc, argv);
 
-   glutInitContextVersion(4, 3);
+   glutInitContextVersion(2, 1);
    glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
 
    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
