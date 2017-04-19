@@ -132,7 +132,7 @@ void drawScene()
    glLoadIdentity();
 
    // Position the objects for viewing.
-   gluLookAt(0.0, 3.0, 12.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+   gluLookAt(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
    glLineWidth(2.0); // Thicken the wireframes.
 
