@@ -208,13 +208,13 @@ void drawScene()
  glBindTexture(GL_TEXTURE_2D, imageTex);
  glBegin(GL_QUADS);
   glTexCoord2f(1, 1);
-  glVertex2f(-w/2,  -h/2);
+  glVertex2f(-w,  -h);
   glTexCoord2f(1, 0);
-  glVertex2f(-w/2, h/2);
+  glVertex2f(-w, h);
   glTexCoord2f(0, 0);
-  glVertex2f(w/2, h/2);
+  glVertex2f(w, h);
   glTexCoord2f(0, 1);
-  glVertex2f(w/2,-h/2);
+  glVertex2f(w,-h);
  glEnd();
 
  // // Back facing texture (facing backward because of the reversed the vertex winding)
