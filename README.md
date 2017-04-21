@@ -1,5 +1,9 @@
 # Markless-AR-experiments
-experiments for university course project  
+Experiments for course project  
+University of Alberta CMPUT 414 (W2017)  
+
+Dependencies:  
+OpenCV 3+
 
 To run:  
 `./main <video_input>`  

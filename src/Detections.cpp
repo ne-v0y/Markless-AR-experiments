@@ -64,7 +64,7 @@ namespace opencv_handler
   {
     Mat copy = Detections::img;
     //cvtColor(copy, copy, CV_BGR2GRAY);
-    blur(copy, copy, Size(3,3));
+    blur(copy, copy, Size(4,4 ));
     Canny(copy, Detections::mask, 100, 300, 3);
     vector<Vec4i> lines_pos;
     vector<Point2f> drawing_pts;
@@ -117,10 +117,9 @@ namespace opencv_handler
     else
     {
       bounding = boundingRect(line_intersc);
-
+      Detections::bounding_box = bounding;
       /* passing the bounding box to ROI*/
       /* TODO: add a good filtering and recovery scheme*/
-      Detections::bounding_box = bounding;
 
       vertices.push_back(Point2f(bounding.x, bounding.y));
       vertices.push_back(Point2f(bounding.x + bounding.width, bounding.y));
@@ -137,7 +136,7 @@ namespace opencv_handler
         if (sqrt(d.x*d.x + d.y*d.y) < diff_)
           diff_ = sqrt(d.x*d.x + d.y*d.y);
       }
-      cout << diff_ << endl;
+      //cout << diff_ << endl;
       //cout << "bounding rectangel" << bounding << endl;
 
       // TODO: use some good algorithm to find most useful four points
@@ -179,6 +178,7 @@ namespace opencv_handler
     //rectangle(copy, bounding, Scalar(200,200,0), 2, 8, 0 );
     if( vertices.size() >= 4 and useful.size() >= 4)
     {
+      //Detections::bounding_box = boundingRect(useful);
       Detections::success_count += 1;
       if(Detections::success_count == 5)
         Detections::detected = true;
@@ -261,19 +261,19 @@ namespace opencv_handler
         vector<Point3f> axis;
         tmp.x = 0; tmp.y = 0; tmp.z =0;
         axis.push_back(tmp);
-        tmp.x = 0; tmp.y = 50; tmp.z =0;
+        tmp.x = 0; tmp.y = 100; tmp.z =0;
         axis.push_back(tmp);
-        tmp.x = 50; tmp.y = 50; tmp.z =0;
+        tmp.x = 100; tmp.y = 100; tmp.z =0;
         axis.push_back(tmp);
-        tmp.x = 50; tmp.y = 0; tmp.z =0;
+        tmp.x = 100; tmp.y = 0; tmp.z =0;
         axis.push_back(tmp);
-        tmp.x = 0; tmp.y = 0; tmp.z =-50;
+        tmp.x = 0; tmp.y = 0; tmp.z =-100;
         axis.push_back(tmp);
-        tmp.x = 0; tmp.y = 50; tmp.z =-50;
+        tmp.x = 0; tmp.y = 100; tmp.z =-100;
         axis.push_back(tmp);
-        tmp.x = 50; tmp.y = 50; tmp.z =-50;
+        tmp.x = 100; tmp.y = 100; tmp.z =-100;
         axis.push_back(tmp);
-        tmp.x = 50; tmp.y = 0; tmp.z =-50;
+        tmp.x = 100; tmp.y = 0; tmp.z =-100;
         axis.push_back(tmp);
         vector<Point2f> outputPoints;
         projectPoints(axis, Detections::rvec, Detections::tvec, cameraMatrix, distCoeffs, outputPoints);
